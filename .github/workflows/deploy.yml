@@ -2,10 +2,20 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"] # Pastikan ini nama branch utama kamu
+    branches: ["main"]
+
+# TAMBAHKAN BAGIAN INI (Sangat Penting)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
+    # Izinkan satu deployment dalam satu waktu
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -13,8 +23,11 @@ jobs:
 
       - name: Inject Secret into HTML
         run: |
-          # Perintah ini mengganti teks placeholder dengan Secret asli
+          # Mengganti placeholder dengan Secret asli
           sed -i 's/TOKEN_DARI_GITHUB/${{ secrets.HF_TOKEN }}/g' index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

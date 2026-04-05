@@ -236,7 +236,7 @@ async function generateAI() {
     const kegiatan = document.getElementById('in_kegiatan').value;
     const lokasi = document.getElementById('in_lokasi').value;
 
-    const hfApiKey = "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"; // ganti token kamu
+    const hfApiKey = "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"; // ⚠️ ganti API key
 
     if (!kegiatan || !lokasi) {
         alert("Pilih kegiatan dan lokasi dulu!");
@@ -248,15 +248,14 @@ async function generateAI() {
     btn.innerText = "Generating...";
 
     try {
-        const prompt = `Jawab HANYA dalam JSON valid tanpa teks tambahan.
+        const prompt = `Jawab HANYA JSON valid tanpa teks tambahan.
 
-Gunakan bahasa laporan resmi (baku, formal, gaya dinas pemerintahan Indonesia).
+Gunakan bahasa laporan resmi (baku, formal).
 
-Buat laporan PPL:
 Kegiatan: ${kegiatan}
 Lokasi: ${lokasi}
 
-Format JSON:
+Format:
 {
   "deskripsi": "Paragraf panjang minimal 5 kalimat",
   "masalah": ["Minimal 2 poin"],
@@ -279,82 +278,22 @@ Format JSON:
             })
         });
 
-        const data = await res.json();
-
-        // 🔴 Handle model loading
-        if (data.error) {
-            alert("⚠️ Model masih loading, coba lagi 5-10 detik.\n\nDetail: " + data.error);
-            return;
-        }
-
-        let text = data[0]?.generated_text || "";
-
-        let result;
-
-        try {
-            let jsonMatch = text.match(/\{[\s\S]*\}/);
-
-            if (!jsonMatch) {
-<script>
-async function generateAI() {
-    const btn = document.getElementById('btn-ai');
-    const loader = document.getElementById('loader');
-    const kegiatan = document.getElementById('in_kegiatan').value;
-    const lokasi = document.getElementById('in_lokasi').value;
-
-    const hfApiKey = "ISI_API_KEY_BARU"; // ⚠️ ganti!
-
-    if (!kegiatan || !lokasi) {
-        alert("Pilih kegiatan dan lokasi dulu!");
-        return;
-    }
-
-    btn.disabled = true;
-    loader.classList.remove('hidden');
-    btn.innerText = "Generating...";
-
-    try {
-        const prompt = `Jawab HANYA JSON valid.
-
-Kegiatan: ${kegiatan}
-Lokasi: ${lokasi}
-
-Format:
-{
-  "deskripsi": "paragraf",
-  "masalah": ["poin"],
-  "upaya": ["poin"]
-}`;
-
-        const res = await fetch("https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${hfApiKey}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                inputs: prompt,
-                parameters: {
-                    max_new_tokens: 300,
-                    temperature: 0.6
-                }
-            })
-        });
-
-        // 🔴 CEK STATUS HTTP (INI YANG KURANG)
+        // 🔴 cek error HTTP
         if (!res.ok) {
             const errText = await res.text();
-            throw new Error("HTTP Error: " + res.status + " - " + errText);
+            throw new Error("HTTP " + res.status + ": " + errText);
         }
 
         const data = await res.json();
 
+        // 🔴 model loading
         if (data.error) {
-            throw new Error(data.error);
+            throw new Error("Model loading / error: " + data.error);
         }
 
         let text = data[0]?.generated_text || "";
 
+        // 🔴 ambil JSON
         let jsonMatch = text.match(/\{[\s\S]*\}/);
 
         if (!jsonMatch) {
@@ -363,6 +302,7 @@ Format:
 
         const result = JSON.parse(jsonMatch[0]);
 
+        // isi ke form
         document.getElementById('in_hasil').value = result.deskripsi || "";
         document.getElementById('in_masalah').value = (result.masalah || []).join('\n');
         document.getElementById('in_upaya').value = (result.upaya || []).join('\n');
@@ -370,8 +310,8 @@ Format:
         updateLaporan();
 
     } catch (e) {
-        console.error("DETAIL ERROR:", e);
-        alert("❌ ERROR:\n" + e.message);
+        console.error("ERROR DETAIL:", e);
+        alert("❌ Gagal generate AI:\n" + e.message);
     } finally {
         btn.disabled = false;
         loader.classList.add('hidden');

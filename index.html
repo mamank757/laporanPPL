@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page_title">Laporan PPL - INDONESIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+        
+        * { box-sizing: border-box; }
+        body { font-family: 'Times New Roman', Times, serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 0; }
+        
+        #report table { border-spacing: 0; border-collapse: collapse; width: 100%; }
+        #report td { padding-top: 2px; padding-bottom: 2px; line-height: 1.5; vertical-align: top; }
+        #report td:last-child { text-align: justify; }
+
+        .report-container { width: 100%; padding: 10px; display: flex; justify-content: center; overflow: visible; }
+
+        /* Kertas Laporan */
+        .report-page {
+            background: white; width: 210mm; 
+            /* Hapus min-height agar bisa memanjang ke halaman 2 */
+            min-height: 297mm;
+            padding: 20mm; margin: 10px auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            font-size: 11pt; line-height: 1.4; color: black;
+            position: relative; transform-origin: top center;
+        }
+
+        /* Preview Full Layar HP - Diperbaiki agar tidak sempit */
+        @media screen and (max-width: 210mm) {
+            .report-container { padding: 0; display: block; }
+            .report-page {
+                transform: scale(calc(100vw / 210mm)); 
+                transform-origin: top left; 
+                margin: 0;
+                /* Kalkulasi margin bawah otomatis berdasarkan skala agar footer tidak tertutup */
+                margin-bottom: calc(20px - (297mm * (1 - (100vw / 210mm)))); 
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* Perbaikan Cetak PDF - Mendukung Halaman Ganda */
+        @media print {
+            @page { size: A4; margin: 0; }
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .report-container { padding: 0 !important; margin: 0 !important; display: block !important; overflow: visible !important; }
+            .report-page {
+                transform: none !important; margin: 0 !important; border: none !important;
+                box-shadow: none !important; width: 210mm !important;
+                padding: 20mm !important; 
+                /* Biarkan konten mengalir ke halaman berikutnya */
+                height: auto !important;
+                min-height: 0 !important;
+            }
+            /* Menjaga elemen penting tidak terpotong di tengah */
+            tr, .foto-wrap, ul { page-break-inside: avoid; }
+        }
+
+        /* Dark Mode Input Groups */
+        .input-group label { display: block; font-size: 0.75rem; font-weight: bold; color: #bbb; margin-bottom: 2px; }
+        .input-group input, .input-group textarea, .input-group select { 
+            width: 100%; background-color: #1e1e1e; border: 1px solid #333; color: #fff;
+            padding: 10px; border-radius: 6px; font-family: sans-serif; font-size: 1rem; 
+        }
+        
+        /* Foto Center & Batas Maksimal */
+        #img_preview { 
+            display: block; 
+            margin: 10px auto; 
+            max-width: 12cm; /* Batas lebar */
+            max-height: 8cm; /* Batas tinggi */
+            border: 1px solid #ddd; 
+            object-fit: contain; 
+        }
+        .hidden-element { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 md:my-8 rounded-xl shadow-2xl border-t-4 border-blue-600">
+        <h2 class="text-xl md:text-2xl font-bold mb-6 text-blue-400 border-b border-gray-700 pb-2 flex items-center">
+            <span class="mr-2">🌾</span> Sistem Laporan Digital PPL Indonesia
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
+                <h3 class="font-bold text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">I. Identitas Penyuluh</h3>
+                <div class="input-group"><label>Nama Penyuluh</label><input type="text" id="in_nama" oninput="updateLaporan()" placeholder="ABDUL RAHMAN, SP"></div>
+                <div class="input-group"><label>NIP</label><input type="text" id="in_nip" oninput="updateLaporan()" placeholder="1990....."></div>
+                <div class="input-group">
+                    <label>Pangkat/Golongan</label>
+                    <select id="in_pangkat" onchange="updateLaporan()">
+                        <option value="">-- Pilih Pangkat/Golongan --</option>
+                        <option value="Pengatur Muda (II/a)">Pengatur Muda (II/a)</option>
+                        <option value="Pengatur Muda Tk.I (II/b)">Pengatur Muda Tk.I (II/b)</option>
+                        <option value="Pengatur (II/c)">Pengatur (II/c)</option>
+                        <option value="Pengatur Tk.I (II/d)">Pengatur Tk.I (II/d)</option>
+                        <option value="Penata Muda (III/a)">Penata Muda (III/a)</option>
+                        <option value="Penata Muda Tk.I (III/b)">Penata Muda Tk.I (III/b)</option>
+                        <option value="Penata (III/c)">Penata (III/c)</option>
+                        <option value="Penata Tk.I (III/d)">Penata Tk.I (III/d)</option>
+                        <option value="Pembina (IV/a)">Pembina (IV/a)</option>
+                        <option value="Pembina Tk.I (IV/b)">Pembina Tk.I (IV/b)</option>
+                        <option value="Pembina Utama Muda (IV/c)">Pembina Utama Muda (IV/c)</option>
+                        <option value="Pembina Utama Madya (IV/d)">Pembina Utama Madya (IV/d)</option>
+                        <option value="Pembina Utama (IV/e)">Pembina Utama (IV/e)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Jabatan</label>
+                    <select id="in_jabatan" onchange="updateLaporan()">
+                        <option value="">-- Pilih Jabatan --</option>
+                        <option value="Penyuluh Pertanian Pemula">Penyuluh Pertanian Pemula</option>
+                        <option value="Penyuluh Pertanian Terampil">Penyuluh Pertanian Terampil</option>
+                        <option value="Penyuluh Pertanian Mahir">Penyuluh Pertanian Mahir</option>
+                        <option value="Penyuluh Pertanian Penyelia">Penyuluh Pertanian Penyelia</option>
+                        <option value="Penyuluh Pertanian Ahli Pertama">Penyuluh Pertanian Ahli Pertama</option>
+                        <option value="Penyuluh Pertanian Ahli Muda">Penyuluh Pertanian Ahli Muda</option>
+                        <option value="Penyuluh Pertanian Ahli Madya">Penyuluh Pertanian Ahli Madya</option>
+                        <option value="Penyuluh Pertanian Ahli Utama">Penyuluh Pertanian Ahli Utama</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>Unit Kerja</label><input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI"></div>
+            </div>
+
+            <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
+                <h3 class="font-bold text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">II. Detail Pelaksanaan</h3>
+                <div class="input-group">
+                    <label>Nama Kegiatan</label>
+                    <select id="in_kegiatan" onchange="updateLaporan()">
+                        <option value="">-- Pilih Kegiatan --</option>
+                        <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
+                        <option value="Pendampingan Hilirisasi Perkebunan">Pendampingan Hilirisasi Perkebunan</option>
+                        <option value="Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak">Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak</option>
+                        <option value="Pendampingan Pemanfaatan Alat dan Mesin Pertanian">Pendampingan Pemanfaatan Alat dan Mesin Pertanian</option>
+                        <option value="Pendampingan RDKK Pupuk Subsidi">Pendampingan RDKK Pupuk Subsidi</option>
+                        <option value="Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)">Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)</option>
+                        <option value="Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan">Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan</option>
+                        <option value="Pendampingan Kinerja Brigade Pangan (BP)">Pendampingan Kinerja Brigade Pangan (BP)</option>
+                        <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju, Sekretariat Poktan Bina Bersama"></div>
+                <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
+                <div class="input-group"><label>Foto Kegiatan (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+                <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
+            </div>
+
+            <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
+                <h3 class="font-bold text-orange-400 text-xs uppercase tracking-wider border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
+                <div class="input-group"><label>Jabatan Penandatangan</label><input type="text" id="in_koor_jabatan" oninput="updateLaporan()" value="Koordinator BPP ..."></div>
+                <div class="input-group"><label>Nama Pejabat</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Tulis Nama"></div>
+                <div class="input-group"><label>NIP Pejabat</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="Tulis NIP"></div>
+            </div>
+        </div>
+
+        <div class="mt-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-purple-400 text-xs uppercase tracking-wider">III. Isi Laporan (AI Powered)</h3>
+                <button onclick="generateAI()" id="btn-ai" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-6 rounded-full shadow-md transition">
+                    <span id="loader" class="hidden">🌀</span> ✨ Generate Otomatis
+                </button>
+            </div>
+            <div class="input-group"><label>Hasil Pekerjaan</label><textarea id="in_hasil" oninput="updateLaporan()" class="h-24"></textarea></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="input-group"><label>Permasalahan</label><textarea id="in_masalah" oninput="updateLaporan()" class="h-20"></textarea></div>
+                <div class="input-group"><label>Upaya Penanganan</label><textarea id="in_upaya" oninput="updateLaporan()" class="h-20"></textarea></div>
+            </div>
+        </div>
+
+        <div class="mt-8 flex flex-col md:flex-row gap-4">
+            <button onclick="updateLaporan()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg">Update Preview</button>
+            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg">🖨️ Cetak / Simpan PDF</button>
+        </div>
+    </div>
+
+    <div class="report-container">
+        <div id="report" class="report-page">
+            <div class="text-center font-bold text-base mb-6 uppercase">
+                LAPORAN PELAKSANAAN <br> <span id="out_judul_kegiatan">PENYULUHAN PERTANIAN</span>
+            </div>
+
+            <table class="w-full mb-2">
+                <tr><td style="width: 25px;" class="font-bold">1.</td><td colspan="2" class="font-bold">Penyuluh Pertanian</td></tr>
+                <tr class="font-normal"><td></td><td style="width: 160px;">a. Nama/NIP</td><td>: <span id="out_nama" class="font-bold uppercase"></span> / NIP. <span id="out_nip"></span></td></tr>
+                <tr class="font-normal"><td></td><td>b. Pangkat/Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
+                <tr class="font-normal"><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
+                <tr class="font-normal"><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
+                <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td class="font-normal">: Programa Penyuluhan Pertanian</td></tr>
+                <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td class="font-bold uppercase">: <span id="out_kegiatan"></span></td></tr>
+                <tr><td class="font-bold">4.</td><td colspan="2" class="font-bold pt-2">Pelaksanaan</td></tr>
+                <tr class="font-normal"><td></td><td>a. Waktu</td><td>: <span id="out_tgl"></span></td></tr>
+                <tr class="font-normal"><td></td><td>b. Tempat/Lokasi</td><td>: <span id="out_lokasi"></span></td></tr>
+                <tr class="font-normal"><td></td><td>c. Peserta</td><td>: <span id="out_peserta"></span></td></tr>
+                <tr><td class="font-bold">5.</td><td class="font-bold">Hasil Pekerjaan</td><td class="font-normal">: </td></tr>
+            </table>
+
+            <div class="ml-6 text-justify italic mb-1 font-normal">Deskripsi :</div>
+            <div id="out_hasil" class="ml-6 text-justify mb-2 whitespace-pre-line text-sm font-normal"></div>
+
+            <div id="foto_container" class="foto-wrap mb-4 hidden-element text-center">
+                <img id="img_preview" src="" alt="Foto Kegiatan">
+                <p class="text-[10pt] italic">Foto Kegiatan</p>
+            </div>
+
+            <div class="font-bold ml-6 mb-1 text-sm">Permasalahan:</div>
+            <ul id="out_masalah" class="ml-12 list-disc text-sm mb-4 font-normal"></ul>
+
+            <div class="font-bold ml-6 mb-1 text-sm">Upaya Penanganan:</div>
+            <ul id="out_upaya" class="ml-12 list-disc text-sm mb-10 font-normal"></ul>
+
+            <div class="mt-8 flex justify-between px-4 font-normal">
+                <div class="text-center">
+                    Mengetahui:<br><span id="out_koor_jabatan"></span>
+                    <div id="out_koor_nama" class="mt-20 font-bold underline uppercase"></div>
+                    NIP. <span id="out_koor_nip"></span>
+                </div>
+                <div class="text-center">
+                    <span id="out_tempat_ttd"></span>, <span id="out_tgl_ttd"></span><br>
+                    Penyuluh Pertanian
+                    <div id="sig_nama" class="mt-20 font-bold underline uppercase"></div>
+                    NIP. <span id="sig_nip"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <script>
+async function generateAI() {
+    const btn = document.getElementById('btn-ai');
+    const loader = document.getElementById('loader');
+    const kegiatan = document.getElementById('in_kegiatan').value;
+    const lokasi = document.getElementById('in_lokasi').value;
+
+    const hfApiKey = "hf_xxx"; // ganti token kamu
+
+    if (!kegiatan || !lokasi) {
+        alert("Pilih kegiatan dan lokasi dulu!");
+        return;
+    }
+
+    btn.disabled = true;
+    loader.classList.remove('hidden');
+    btn.innerText = "Generating...";
+
+    try {
+        const prompt = `Jawab HANYA dalam JSON valid tanpa teks tambahan.
+
+Gunakan bahasa laporan resmi (baku, formal, gaya dinas pemerintahan Indonesia).
+
+Buat laporan PPL:
+Kegiatan: ${kegiatan}
+Lokasi: ${lokasi}
+
+Format JSON:
+{
+  "deskripsi": "Paragraf panjang minimal 5 kalimat",
+  "masalah": ["Minimal 2 poin"],
+  "upaya": ["Minimal 2 poin"]
+}`;
+
+        const res = await fetch("https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${hfApiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inputs: prompt,
+                parameters: {
+                    max_new_tokens: 400,
+                    temperature: 0.6,
+                    return_full_text: false
+                }
+            })
+        });
+
+        const data = await res.json();
+
+        // 🔴 Handle model loading
+        if (data.error) {
+            alert("⚠️ Model masih loading, coba lagi 5-10 detik.\n\nDetail: " + data.error);
+            return;
+        }
+
+        let text = data[0]?.generated_text || "";
+
+        let result;
+
+        try {
+            let jsonMatch = text.match(/\{[\s\S]*\}/);
+
+            if (!jsonMatch) {
+                throw new Error("JSON tidak ditemukan");
+            }
+
+            result = JSON.parse(jsonMatch[0]);
+
+        } catch (err) {
+            console.warn("Parsing gagal:", err);
+
+            result = {
+                deskripsi: text || "Gagal generate deskripsi",
+                masalah: ["Format AI tidak valid"],
+                upaya: ["Silakan generate ulang"]
+            };
+        }
+
+        // ✅ fallback kalau kosong
+        document.getElementById('in_hasil').value = result.deskripsi || "Tidak ada deskripsi";
+        document.getElementById('in_masalah').value = (result.masalah || ["-"]).join('\n');
+        document.getElementById('in_upaya').value = (result.upaya || ["-"]).join('\n');
+
+        updateLaporan();
+
+    } catch (e) {
+        console.error(e);
+        alert("Gagal mengambil data AI.");
+    } finally {
+        btn.disabled = false;
+        loader.classList.add('hidden');
+        btn.innerHTML = `<span id="loader" class="hidden">🌀</span> ✨ Generate Otomatis`;
+    }
+}
+</script>
+</body>
+</html>

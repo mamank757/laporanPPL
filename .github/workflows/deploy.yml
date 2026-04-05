@@ -4,7 +4,6 @@ on:
   push:
     branches: ["main"]
 
-# TAMBAHKAN BAGIAN INI (Sangat Penting)
 permissions:
   contents: read
   pages: write
@@ -12,7 +11,12 @@ permissions:
 
 jobs:
   deploy:
-    # Izinkan satu deployment dalam satu waktu
+    # --- TAMBAHKAN BAGIAN INI ---
+    environment:
+      name: github-pages # Pastikan namanya sesuai dengan nama Environment di Settings kamu
+      url: ${{ steps.deployment.outputs.page_url }}
+    # ----------------------------
+    
     concurrency:
       group: "pages"
       cancel-in-progress: true
@@ -23,7 +27,6 @@ jobs:
 
       - name: Inject Secret into HTML
         run: |
-          # Mengganti placeholder dengan Secret asli
           sed -i 's/TOKEN_DARI_GITHUB/${{ secrets.HF_TOKEN }}/g' index.html
 
       - name: Setup Pages

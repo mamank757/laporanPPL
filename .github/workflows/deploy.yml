@@ -27,7 +27,7 @@ jobs:
 
      - name: Inject Secret into HTML
         run: |
-          sed -i 's|TOKEN_DARI_GITHUB|${{ secrets.HF_TOKEN }}|g' index.html
+          sed -i "s|TOKEN_DARI_GITHUB|${{ secrets.HF_TOKEN }}|g" index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

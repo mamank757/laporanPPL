@@ -111,8 +111,8 @@
         #img_preview { 
             display: block; 
             margin: 10px auto; 
-            max-width: 12cm; 
-            max-height: 8cm; 
+            max-width: 9cm; 
+            max-height: 6cm; 
             border: 1px solid #ddd; 
             object-fit: contain; 
         }
@@ -199,9 +199,9 @@
                         <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
                     </select>
                 </div>
-                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
+                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju, Sekretariat Poktan  Masselomoe"></div>
                 <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
-                <div class="input-group"><label>Foto Kegiatan (opsional/tidak wajib)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+                <div class="input-group"><label>Foto Kegiatan (opsional/tdk wajib)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
             </div>
 
             <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
@@ -216,9 +216,9 @@
 
         <div class="mt-6 space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-purple-400 text-xs uppercase tracking-wider">III. Isi Laporan (AI Powered) [edit jika tidak sesuai dengan hasil yang diinginkan]</h3>
+                <h3 class="font-bold text-purple-400 text-xs uppercase tracking-wider">III. Isi Laporan (AI Powered) [edit jika tdk sesuai dgn hasil yg diinginkan]</h3>
                 <button onclick="generateAI()" id="btn-ai" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-6 rounded-full shadow-md transition">
-                    <span id="loader" class="hidden">🌀</span> ✨ Generate Otomatis
+                    <span id="loader" class="hidden">🌀</span> ✨ Generate AI Otomatis
                 </button>
             </div>
             <div class="input-group"><label>Hasil Pekerjaan (edit jika tdk sesuai)</label><textarea id="in_hasil" oninput="updateLaporan()" class="h-24"></textarea></div>

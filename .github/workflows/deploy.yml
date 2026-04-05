@@ -11,23 +11,23 @@ permissions:
 
 jobs:
   deploy:
-    # --- TAMBAHKAN BAGIAN INI ---
     environment:
-      name: github-pages # Pastikan namanya sesuai dengan nama Environment di Settings kamu
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    # ----------------------------
     
     concurrency:
       group: "pages"
       cancel-in-progress: true
+      
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-   - name: Inject Secret into HTML
-      run: |
-        sed -i 's|TOKEN_DARI_GITHUB|${{ secrets.HF_TOKEN }}|g' index.html
+      - name: Inject Secret into HTML
+        run: |
+          sed -i 's|TOKEN_DARI_GITHUB|${{ secrets.HF_TOKEN }}|g' index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -5,7 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page_title">Laporan PPL - INDONESIA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+     /* CONTAINER UNTUK TOMBOL DI KANAN BAWAH */
+        .floating-container {
+            position: fixed;
+            bottom: 30px; /* Posisi dari bawah */
+            right: 20px;  /* Posisi dari kanan */
+            display: flex;
+            flex-direction: column; /* Susun vertikal ke atas */
+            gap: 15px;    /* Jarak antar tombol */
+            z-index: 9999;
+        }
+
+        .floating-btn {
+            width: 55px;
+            height: 55px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+         .floating-home {
+            background-color: #11807e; /* Hijau */
+            font-size: 24px;
+        }
+
+        .floating-tiktok {
+            background-color: #000000; /* Hitam TikTok */
+            font-size: 24px;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+        }
+
+/* 3. Menghilangkan tombol saat Print/PDF */
+@media print {
+    .floating-container {
+        display: none !important;
+    }
+}
+
         @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
         
         * { box-sizing: border-box; }
@@ -74,6 +120,13 @@
     </style>
 </head>
 <body>
+    
+    <div class="floating-container">
+    <a href="https://mamank757.github.io/PPL" class="floating-btn floating-home" title="Kembali ke Home"><i class="fa-solid fa-house"></i></a>
+    <a href="https://www.tiktok.com/@generasi90blog" target="_blank" class="floating-btn floating-tiktok" title="Kunjungi TikTok">
+        <i class="fa-brands fa-tiktok"></i>
+    </a>
+</div>
 
     <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 md:my-8 rounded-xl shadow-2xl border-t-4 border-blue-600">
         <h2 class="text-xl md:text-2xl font-bold mb-6 text-blue-400 border-b border-gray-700 pb-2 flex items-center">
@@ -189,7 +242,7 @@
 
             <table class="w-full mb-2">
                 <tr><td style="width: 25px;" class="font-bold">1.</td><td colspan="2" class="font-bold">Penyuluh Pertanian</td></tr>
-                <tr class="font-normal"><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama" class="font-bold uppercase"></span> / NIP. <span id="out_nip"></span></td></tr>
+                <tr class="font-normal"><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama" class="font-normal"></span> / NIP. <span id="out_nip"></span></td></tr>
                 <tr class="font-normal"><td></td><td>b. Pangkat / Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
                 <tr class="font-normal"><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
                 <tr class="font-normal"><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
@@ -225,7 +278,7 @@
                 <div class="text-center">
                     <span id="out_tempat_ttd"></span>, <span id="out_tgl_ttd"></span><br>
                     Penyuluh Pertanian
-                    <div id="sig_nama" class="mt-20 font-bold underline uppercase"></div>
+                    <div id="sig_nama" class="mt-20 font-bold underline"></div>
                     NIP. <span id="sig_nip"></span>
                 </div>
             </div>

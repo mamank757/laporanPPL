@@ -236,7 +236,7 @@ async function generateAI() {
     const kegiatan = document.getElementById('in_kegiatan').value;
     const lokasi = document.getElementById('in_lokasi').value;
 
-    const hfApiKey = "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"; // ganti token kamu
+    const hfApiKey = "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"; // ganti token kamu
 
     if (!kegiatan || !lokasi) {
         alert("Pilih kegiatan dan lokasi dulu!");
@@ -295,31 +295,83 @@ Format JSON:
             let jsonMatch = text.match(/\{[\s\S]*\}/);
 
             if (!jsonMatch) {
-                throw new Error("JSON tidak ditemukan");
-            }
+<script>
+async function generateAI() {
+    const btn = document.getElementById('btn-ai');
+    const loader = document.getElementById('loader');
+    const kegiatan = document.getElementById('in_kegiatan').value;
+    const lokasi = document.getElementById('in_lokasi').value;
 
-            result = JSON.parse(jsonMatch[0]);
+    const hfApiKey = "ISI_API_KEY_BARU"; // ⚠️ ganti!
 
-        } catch (err) {
-            console.warn("Parsing gagal:", err);
+    if (!kegiatan || !lokasi) {
+        alert("Pilih kegiatan dan lokasi dulu!");
+        return;
+    }
 
-            result = {
-                deskripsi: text || "Gagal generate deskripsi",
-                masalah: ["Format AI tidak valid"],
-                upaya: ["Silakan generate ulang"]
-            };
+    btn.disabled = true;
+    loader.classList.remove('hidden');
+    btn.innerText = "Generating...";
+
+    try {
+        const prompt = `Jawab HANYA JSON valid.
+
+Kegiatan: ${kegiatan}
+Lokasi: ${lokasi}
+
+Format:
+{
+  "deskripsi": "paragraf",
+  "masalah": ["poin"],
+  "upaya": ["poin"]
+}`;
+
+        const res = await fetch("https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${hfApiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inputs: prompt,
+                parameters: {
+                    max_new_tokens: 300,
+                    temperature: 0.6
+                }
+            })
+        });
+
+        // 🔴 CEK STATUS HTTP (INI YANG KURANG)
+        if (!res.ok) {
+            const errText = await res.text();
+            throw new Error("HTTP Error: " + res.status + " - " + errText);
         }
 
-        // ✅ fallback kalau kosong
-        document.getElementById('in_hasil').value = result.deskripsi || "Tidak ada deskripsi";
-        document.getElementById('in_masalah').value = (result.masalah || ["-"]).join('\n');
-        document.getElementById('in_upaya').value = (result.upaya || ["-"]).join('\n');
+        const data = await res.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        let text = data[0]?.generated_text || "";
+
+        let jsonMatch = text.match(/\{[\s\S]*\}/);
+
+        if (!jsonMatch) {
+            throw new Error("JSON tidak ditemukan dari AI");
+        }
+
+        const result = JSON.parse(jsonMatch[0]);
+
+        document.getElementById('in_hasil').value = result.deskripsi || "";
+        document.getElementById('in_masalah').value = (result.masalah || []).join('\n');
+        document.getElementById('in_upaya').value = (result.upaya || []).join('\n');
 
         updateLaporan();
 
     } catch (e) {
-        console.error(e);
-        alert("Gagal mengambil data AI.");
+        console.error("DETAIL ERROR:", e);
+        alert("❌ ERROR:\n" + e.message);
     } finally {
         btn.disabled = false;
         loader.classList.add('hidden');

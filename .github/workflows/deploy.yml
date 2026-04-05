@@ -1,0 +1,26 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"] # Pastikan ini nama branch utama kamu
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject Secret into HTML
+        run: |
+          # Perintah ini mengganti teks placeholder dengan Secret asli
+          sed -i 's/TOKEN_DARI_GITHUB/${{ secrets.HF_TOKEN }}/g' index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

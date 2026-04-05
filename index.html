@@ -109,7 +109,7 @@
                         <option value="Penata Muda (III/a)">Penata Muda (III/a)</option>
                         <option value="Penata Muda Tk. I (III/b)">Penata Muda Tk. I (III/b)</option>
                         <option value="Penata (III/c)">Penata (III/c)</option>
-                          <option value="Penata Tk. I (III/d)">Penata Tk. I (III/d)</option>
+                        <option value="Penata Tk. I (III/d)">Penata Tk. I (III/d)</option>
                         <option value="Pembina (IV/a)">Pembina (IV/a)</option>
                     </select>
                 </div>
@@ -119,19 +119,23 @@
                         <option value="">-- Pilih Jabatan --</option>
                         <option value="Penyuluh Pertanian Ahli Pertama">Penyuluh Pertanian Ahli Pertama</option>
                         <option value="Penyuluh Pertanian Ahli Muda">Penyuluh Pertanian Ahli Muda</option>
-                        <option value="Penyuluh Pertanian Ahli Muda">Penyuluh Pertanian Ahli Madya</option>
+                        <option value="Penyuluh Pertanian Ahli Madya">Penyuluh Pertanian Ahli Madya</option>
                     </select>
                 </div>
                 <div class="input-group"><label>Unit Kerja</label><input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI"></div>
             </div>
 
             <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
-                <h3 class="font-bold text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">II. Detail Pelaksanaan</h3>
+                <h3 class="font-normal text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">II. Detail Pelaksanaan</h3>
+                <div class="input-group">
+                    <label>Dasar Pelaksanaan</label>
+                    <input type="text" id="in_dasar" oninput="updateLaporan()" value="Programa Penyuluhan Pertanian">
+                </div>
                 <div class="input-group">
                     <label>Nama Kegiatan</label>
                     <select id="in_kegiatan" onchange="updateLaporan()">
                         <option value="">-- Pilih Kegiatan --</option>
-                         <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
+                        <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
                         <option value="Pendampingan Hilirisasi Perkebunan">Pendampingan Hilirisasi Perkebunan</option>
                         <option value="Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak">Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak</option>
                         <option value="Pendampingan Pemanfaatan Alat dan Mesin Pertanian">Pendampingan Pemanfaatan Alat dan Mesin Pertanian</option>
@@ -145,11 +149,12 @@
                 <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
                 <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
                 <div class="input-group"><label>Foto Kegiatan</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
-                <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
             </div>
 
             <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
                 <h3 class="font-bold text-orange-400 text-xs uppercase tracking-wider border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
+                <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
+                <div class="input-group"><label>Tanggal Pengesahan</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
                 <div class="input-group"><label>Jabatan Penandatangan</label><input type="text" id="in_koor_jabatan" oninput="updateLaporan()" value="Koordinator BPP ..."></div>
                 <div class="input-group"><label>Nama Pejabat</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Nama Koordinator"></div>
                 <div class="input-group"><label>NIP Pejabat</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
@@ -188,8 +193,8 @@
                 <tr class="font-normal"><td></td><td>b. Pangkat / Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
                 <tr class="font-normal"><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
                 <tr class="font-normal"><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
-                <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td class="font-normal">: Programa Penyuluhan Pertanian</td></tr>
-                <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td class="font-bold uppercase">: <span id="out_kegiatan"></span></td></tr>
+                <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td class="font-normal">: <span id="out_dasar"></span></td></tr>
+                <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td class="font-normal">: <span id="out_kegiatan"></span></td></tr>
                 <tr><td class="font-bold">4.</td><td colspan="2" class="font-bold pt-2">Pelaksanaan</td></tr>
                 <tr class="font-normal"><td></td><td>a. Waktu</td><td>: <span id="out_tgl"></span></td></tr>
                 <tr class="font-normal"><td></td><td>b. Tempat/Lokasi</td><td>: <span id="out_lokasi"></span></td></tr>
@@ -262,9 +267,17 @@
         }
 
         function updateLaporan() {
-            const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_jabatan', 'koor_nama', 'koor_nip'];
-            const tglStr = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+            const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_jabatan', 'koor_nama', 'koor_nip', 'dasar'];
+            const tglOtomatis = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
             
+            // Handle Tanggal Manual vs Otomatis
+            const tglManual = document.getElementById('in_tgl_ttd_manual').value;
+            let tglTampil = tglOtomatis;
+            if (tglManual) {
+                const d = new Date(tglManual);
+                tglTampil = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
             fields.forEach(f => {
                 const elInput = document.getElementById('in_' + f);
                 if (!elInput) return;
@@ -276,8 +289,8 @@
                 if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = elInput.value ? elInput.value.toUpperCase() : 'PENYULUHAN PERTANIAN';
             });
 
-            document.getElementById('out_tgl').innerText = tglStr;
-            document.getElementById('out_tgl_ttd').innerText = tglStr;
+            document.getElementById('out_tgl').innerText = tglTampil;
+            document.getElementById('out_tgl_ttd').innerText = tglTampil;
 
             const renderList = (inId, outId) => {
                 const outEl = document.getElementById(outId);

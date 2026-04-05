@@ -5,7 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page_title">Laporan PPL - INDONESIA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+     /* CONTAINER UNTUK TOMBOL DI KANAN BAWAH */
+        .floating-container {
+            position: fixed;
+            bottom: 30px; /* Posisi dari bawah */
+            right: 20px;  /* Posisi dari kanan */
+            display: flex;
+            flex-direction: column; /* Susun vertikal ke atas */
+            gap: 15px;    /* Jarak antar tombol */
+            z-index: 9999;
+        }
+
+        .floating-btn {
+            width: 55px;
+            height: 55px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+         .floating-home {
+            background-color: #11807e; /* Hijau */
+            font-size: 24px;
+        }
+
+        .floating-tiktok {
+            background-color: #000000; /* Hitam TikTok */
+            font-size: 24px;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+        }
+
+/* 3. Menghilangkan tombol saat Print/PDF */
+@media print {
+    .floating-container {
+        display: none !important;
+    }
+}
+
         @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
         
         * { box-sizing: border-box; }
@@ -74,61 +120,66 @@
     </style>
 </head>
 <body>
+    
+    <div class="floating-container">
+    <a href="https://mamank757.github.io/PPL" class="floating-btn floating-home" title="Kembali ke Home"><i class="fa-solid fa-house"></i></a>
+    <a href="https://www.tiktok.com/@generasi90blog" target="_blank" class="floating-btn floating-tiktok" title="Kunjungi TikTok">
+        <i class="fa-brands fa-tiktok"></i>
+    </a>
+</div>
 
     <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 md:my-8 rounded-xl shadow-2xl border-t-4 border-blue-600">
         <h2 class="text-xl md:text-2xl font-bold mb-6 text-blue-400 border-b border-gray-700 pb-2 flex items-center">
-            <span class="mr-2">💻</span> Sistem Pelaporan Digital PPL Indonesia
+            <span class="mr-2">🌾</span> Sistem Laporan Digital PPL Indonesia
         </h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
                 <h3 class="font-bold text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">I. Identitas Penyuluh</h3>
                 <div class="input-group">
-                    <label>Nama Penyuluh</label>
-                    <input type="text" id="in_nama" oninput="updateLaporan()" placeholder="Cth. ABDUL RAHMAN, SP">
+                    <label>NAMA PENYULUH</label>
+                    <select id="in_nama" onchange="updateDataPenyuluh()">
+                        <option value="">-- Pilih Nama --</option>
+                        <option>ABDUL RAHMAN, SP</option> 
+                        <option>ANDI LUTHFIAH, SP</option>
+                        <option>INDRA YULIANA, S.TP., M.Si.</option>
+                        <option>NURUL FAHMI, S.P.</option>
+                        <option>REZKI RAHAYU, S.P.</option>
+                        <option>RIZAL SMITH ANUGRAH SYAM, S.P.</option>
+                        <option>SUHADY HAMDAN, S.P.</option>
+                        <option>SULFIANITA, S.P.</option>
+                        <option>SURAHMAN, S.TP</option>
+                    </select>
                 </div>
                 <div class="input-group">
-                    <label>NIP</label>
-                    <input type="text" id="in_nip" oninput="updateLaporan()" placeholder="Cth. 1990 ....">
+                    <label>NIP <span class="text-gray-500 font-normal">(Otomatis)</span></label>
+                    <input type="text" id="in_nip" readonly class="opacity-70">
                 </div>
                 <div class="input-group">
                     <label>Pangkat/Golongan</label>
                     <select id="in_pangkat" onchange="updateLaporan()">
-                         <option value="">-- Pilih Pangkat/Golongan --</option>
-                        <option value="Pengatur Muda (II/a)">Pengatur Muda (II/a)</option>
-                        <option value="Pengatur Muda Tk.I (II/b)">Pengatur Muda Tk.I (II/b)</option>
-                        <option value="Pengatur (II/c)">Pengatur (II/c)</option>
-                        <option value="Pengatur Tk.I (II/d)">Pengatur Tk.I (II/d)</option>
+                        <option value="">-- Pilih Pangkat/Golongan --</option>
                         <option value="Penata Muda (III/a)">Penata Muda (III/a)</option>
-                        <option value="Penata Muda Tk.I (III/b)">Penata Muda Tk.I (III/b)</option>
+                        <option value="Penata Muda Tk. I (III/b)">Penata Muda Tk. I (III/b)</option>
                         <option value="Penata (III/c)">Penata (III/c)</option>
-                        <option value="Penata Tk.I (III/d)">Penata Tk.I (III/d)</option>
+                        <option value="Penata Tk. I (III/d)">Penata Tk. I (III/d)</option>
                         <option value="Pembina (IV/a)">Pembina (IV/a)</option>
-                        <option value="Pembina Tk.I (IV/b)">Pembina Tk.I (IV/b)</option>
-                        <option value="Pembina Utama Muda (IV/c)">Pembina Utama Muda (IV/c)</option>
-                        <option value="Pembina Utama Madya (IV/d)">Pembina Utama Madya (IV/d)</option>
-                        <option value="Pembina Utama (IV/e)">Pembina Utama (IV/e)</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label>Jabatan</label>
                     <select id="in_jabatan" onchange="updateLaporan()">
-                         <option value="">-- Pilih Jabatan --</option>
-                        <option value="Penyuluh Pertanian Pemula">Penyuluh Pertanian Pemula</option>
-                        <option value="Penyuluh Pertanian Terampil">Penyuluh Pertanian Terampil</option>
-                        <option value="Penyuluh Pertanian Mahir">Penyuluh Pertanian Mahir</option>
-                        <option value="Penyuluh Pertanian Penyelia">Penyuluh Pertanian Penyelia</option>
+                        <option value="">-- Pilih Jabatan --</option>
                         <option value="Penyuluh Pertanian Ahli Pertama">Penyuluh Pertanian Ahli Pertama</option>
                         <option value="Penyuluh Pertanian Ahli Muda">Penyuluh Pertanian Ahli Muda</option>
                         <option value="Penyuluh Pertanian Ahli Madya">Penyuluh Pertanian Ahli Madya</option>
-                        <option value="Penyuluh Pertanian Ahli Utama">Penyuluh Pertanian Ahli Utama</option>
                     </select>
                 </div>
                 <div class="input-group"><label>Unit Kerja</label><input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI"></div>
             </div>
 
             <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
-                <h3 class="font-bold text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">II. Detail Pelaksanaan</h3>
+                <h3 class="font-normal text-blue-400 text-xs uppercase tracking-wider border-b border-gray-700 pb-1">II. Detail Pelaksanaan</h3>
                 <div class="input-group">
                     <label>Dasar Pelaksanaan</label>
                     <input type="text" id="in_dasar" oninput="updateLaporan()" value="Programa Penyuluhan Pertanian">
@@ -191,7 +242,7 @@
 
             <table class="w-full mb-2">
                 <tr><td style="width: 25px;" class="font-bold">1.</td><td colspan="2" class="font-bold">Penyuluh Pertanian</td></tr>
-                <tr class="font-normal"><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama" class="font-bold uppercase"></span> / NIP. <span id="out_nip"></span></td></tr>
+                <tr class="font-normal"><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama" class="font-normal"></span> / NIP. <span id="out_nip"></span></td></tr>
                 <tr class="font-normal"><td></td><td>b. Pangkat / Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
                 <tr class="font-normal"><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
                 <tr class="font-normal"><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
@@ -227,7 +278,7 @@
                 <div class="text-center">
                     <span id="out_tempat_ttd"></span>, <span id="out_tgl_ttd"></span><br>
                     Penyuluh Pertanian
-                    <div id="sig_nama" class="mt-20 font-bold underline uppercase"></div>
+                    <div id="sig_nama" class="mt-20 font-bold underline"></div>
                     NIP. <span id="sig_nip"></span>
                 </div>
             </div>
@@ -235,6 +286,29 @@
     </div>
 
     <script>
+        const dataPenyuluh = {
+            "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
+            "ANDI LUTHFIAH, SP": { nip: "199307162020122003" },
+            "INDRA YULIANA, S.TP., M.Si.": { nip: "199307062020122001" },
+            "NURUL FAHMI, S.P.": { nip: "198911142020122002" },
+            "REZKI RAHAYU, S.P.": { nip: "199507052020122003" },
+            "RIZAL SMITH ANUGRAH SYAM, S.P.": { nip: "199005152020121001" },
+            "SUHADY HAMDAN, S.P.": { nip: "199202072020121001" },
+            "SULFIANITA, S.P.": { nip: "199505082020122004" },
+            "SURAHMAN, S.TP": { nip: "199203122020121003" }
+        };
+
+        function updateDataPenyuluh() {
+            const nama = document.getElementById("in_nama").value;
+            const nipInput = document.getElementById("in_nip");
+            if(dataPenyuluh[nama]) {
+                nipInput.value = dataPenyuluh[nama].nip;
+            } else {
+                nipInput.value = "";
+            }
+            updateLaporan();
+        }
+
         function handleFoto(input) {
             const container = document.getElementById('foto_container');
             const img = document.getElementById('img_preview');
@@ -313,7 +387,7 @@
                 document.getElementById('in_masalah').value = result.masalah.join('\n');
                 document.getElementById('in_upaya').value = result.upaya.join('\n');
                 updateLaporan();
-            } catch (e) { alert("Gagal mengambil data AI."); } 
+            } catch (e) { alert("Gagal mengambil data AI. Pastikan API Key benar."); } 
             finally { btn.disabled = false; loader.classList.add('hidden'); }
         }
         window.onload = updateLaporan;

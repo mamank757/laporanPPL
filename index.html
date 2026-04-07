@@ -206,6 +206,18 @@
 
             <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
                 <h3 class="font-bold text-orange-400 text-xs uppercase tracking-wider border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
+                <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
+    <h3 class="font-bold text-orange-400 text-xs uppercase tracking-wider border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
+    <div class="input-group">
+        <label>Upload TTD Penyuluh (PNG Transparan)</label>
+        <input type="file" id="in_ttd_ppl" accept="image/*" onchange="handleTTD(this, 'out_img_ttd_ppl')" class="text-xs">
+    </div>
+    <div class="input-group">
+        <label>Upload TTD Koordinator (PNG Transparan)</label>
+        <input type="file" id="in_ttd_koor" accept="image/*" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs">
+    </div>
+</div>
+                
                 <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
                 <div class="input-group"><label>Tanggal Pengesahan</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
                 <div class="input-group"><label>Jabatan Penandatangan</label><input type="text" id="in_koor_jabatan" oninput="updateLaporan()" value="Koordinator BPP ..."></div>
@@ -270,11 +282,24 @@
             <ul id="out_upaya" class="ml-12 list-disc text-sm mb-10 font-normal"></ul>
 
             <div class="mt-8 flex justify-between px-4 font-normal">
-                <div class="text-center">
-                    Mengetahui:<br><span id="out_koor_jabatan"></span>
-                    <div id="out_koor_nama" class="mt-20 font-bold underline uppercase"></div>
-                    NIP. <span id="out_koor_nip"></span>
-                </div>
+    <div class="text-center relative">
+        Mengetahui:<br><span id="out_koor_jabatan"></span>
+        <div class="h-20 flex items-center justify-center">
+            <img id="out_img_ttd_koor" src="" class="max-h-20 hidden">
+        </div>
+        <div id="out_koor_nama" class="font-bold underline uppercase"></div>
+        NIP. <span id="out_koor_nip"></span>
+    </div>
+    <div class="text-center relative">
+        <span id="out_tempat_ttd"></span>, <span id="out_tgl_ttd"></span><br>
+        Penyuluh Pertanian
+        <div class="h-20 flex items-center justify-center">
+            <img id="out_img_ttd_ppl" src="" class="max-h-20 hidden">
+        </div>
+        <div id="sig_nama" class="font-bold underline"></div>
+        NIP. <span id="sig_nip"></span>
+    </div>
+</div>
                 <div class="text-center">
                     <span id="out_tempat_ttd"></span>, <span id="out_tgl_ttd"></span><br>
                     Penyuluh Pertanian
@@ -366,7 +391,7 @@
             const loader = document.getElementById('loader');
             const kegiatan = document.getElementById('in_kegiatan').value;
             const lokasi = document.getElementById('in_lokasi').value;
-            const groqApiKey = "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"; 
+            const groqApiKey = "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"; 
 
             if(!kegiatan || !lokasi) return alert("Pilih kegiatan dan lokasi dulu!");
             btn.disabled = true; loader.classList.remove('hidden');

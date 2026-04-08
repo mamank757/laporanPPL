@@ -31,7 +31,7 @@
 
         /* Responsive Mobile Preview */
         @media screen and (max-width: 210mm) {
-            .report-container { padding: 0; display: block; }
+            .report-container { padding: 0; display: block; overflow-x: hidden; }
             .report-page {
                 transform: scale(calc(100vw / 210mm)); transform-origin: top left;
                 margin: 0; margin-bottom: calc(20px - (297mm * (1 - (100vw / 210mm))));
@@ -39,13 +39,26 @@
             }
         }
 
-        /* Print Settings */
+        /* --- PERBAIKAN UTAMA: PRINT SETTINGS --- */
         @media print {
             @page { size: A4; margin: 0; }
+            body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
             .no-print, .floating-container { display: none !important; }
-            body { background: white !important; }
-            .report-container { padding: 0 !important; margin: 0 !important; }
-            .report-page { transform: none !important; margin: 0 !important; box-shadow: none !important; padding: 20mm !important; height: auto !important; }
+            
+            .report-container { padding: 0 !important; margin: 0 !important; display: block !important; width: 100% !important; }
+            .report-page { 
+                transform: none !important; 
+                margin: 0 !important; 
+                box-shadow: none !important; 
+                padding: 20mm !important; 
+                width: 210mm !important; 
+                min-height: 297mm !important;
+                display: block !important;
+                position: static !important;
+            }
+            
+            /* Memastikan teks berwarna hitam saat dicetakan */
+            #report, #report * { color: black !important; }
             tr, .foto-wrap, ul, .sig-section { page-break-inside: avoid; }
         }
 
@@ -110,6 +123,7 @@
                         <option value="Penata Tk. I (III/d)">Penata Tk. I (III/d)</option>
                         <option value="Pembina (IV/a)">Pembina (IV/a)</option>
                     </select>
+                </div>
                 <div class="input-group"><label>Unit Kerja</label><input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI"></div>
             </div>
 
@@ -131,7 +145,7 @@
                         <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
                     </select>
                 </div>
-                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju, Sekretariat Poktan  Masselomoe"></div>
+                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
                 <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
                 <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
             </div>
@@ -142,7 +156,7 @@
                 <div class="input-group"><label>TTD Koordinator (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs"></div>
                 <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
                 <div class="input-group"><label>Tanggal</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
-                <div class="input-group"><label>Nama Koordinator</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Tulis Nama"></div>
+                <div class="input-group"><label>Nama Koordinator</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="H. ANDI BASO, S.P."></div>
                 <div class="input-group"><label>NIP Koordinator</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
             </div>
         </div>
@@ -162,7 +176,7 @@
         </div>
 
         <div class="mt-8 flex flex-col md:flex-row gap-4">
-            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg">🖨️ Cetak / Simpan PDF</button>
+            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF</button>
         </div>
     </div>
 
@@ -299,7 +313,7 @@
             const loader = document.getElementById('loader');
             const kegiatan = document.getElementById('in_kegiatan').value;
             const lokasi = document.getElementById('in_lokasi').value;
-            const key = "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"; // Ganti dengan key Anda
+            const key = "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"; 
 
             if(!kegiatan || !lokasi) return alert("Isi kegiatan dan lokasi!");
             btn.disabled = true; loader.classList.remove('hidden');
@@ -310,7 +324,7 @@
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
                     body: JSON.stringify({ 
                         model: "llama-3.3-70b-versatile", 
-                        messages: [{ role: "user", content: `Buat laporan PPL singkat kegiatan ${kegiatan} di ${lokasi}. Format JSON: {"deskripsi":"", "masalah":[], "upaya":[]}` }],
+                        messages: [{ role: "user", content: `Buat laporan PPL singkat kegiatan ${kegiatan} di ${lokasi}. Gunakan bahasa formal penyuluhan. Format JSON: {"deskripsi":"", "masalah":[], "upaya":[]}` }],
                         response_format: { type: "json_object" }
                     })
                 });

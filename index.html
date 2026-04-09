@@ -82,50 +82,46 @@
     <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 rounded-xl shadow-2xl border-t-4 border-blue-600">
         <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Sistem Pelaporan Digital PPL</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-            <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
-                <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
-                <div class="input-group">
-                    <label>NAMA PENYULUH</label>
-                    <select id="in_nama" onchange="updateDataPenyuluh()">
-                        <option value="">-- Pilih Nama --</option>
-                        <option>ABDUL RAHMAN, SP</option> 
-                        <option>ANDI LUTHFIAH, SP</option>
-                        <option>INDRA YULIANA, S.TP., M.Si.</option>
-                        <option>NURUL FAHMI, S.P.</option>
-                        <option>REZKI RAHAYU, S.P.</option>
-                        <option>RIZAL SMITH ANUGRAH SYAM, S.P.</option>
-                        <option>SUHADY HAMDAN, S.P.</option>
-                        <option>SULFIANITA, S.P.</option>
-                        <option>SURAHMAN, S.TP</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>NIP (Otomatis)</label>
-                    <input type="text" id="in_nip" readonly class="opacity-70">
-                </div>
-                <div class="input-group">
-                    <label>Jabatan</label>
-                   <select id="in_jabatan" onchange="updateLaporan()">
-                        <option value="">-- Pilih Jabatan --</option>
-                        <option value="Penyuluh Pertanian Ahli Pertama">Penyuluh Pertanian Ahli Pertama</option>
-                        <option value="Penyuluh Pertanian Ahli Muda">Penyuluh Pertanian Ahli Muda</option>
-                        <option value="Penyuluh Pertanian Ahli Madya">Penyuluh Pertanian Ahli Madya</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Pangkat/Golongan</label>
-                     <select id="in_pangkat" onchange="updateLaporan()">
-                        <option value="">-- Pilih Pangkat/Golongan --</option>
-                        <option value="Penata Muda (III/a)">Penata Muda (III/a)</option>
-                        <option value="Penata Muda Tk. I (III/b)">Penata Muda Tk. I (III/b)</option>
-                        <option value="Penata (III/c)">Penata (III/c)</option>
-                        <option value="Penata Tk. I (III/d)">Penata Tk. I (III/d)</option>
-                        <option value="Pembina (IV/a)">Pembina (IV/a)</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Unit Kerja</label><input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI"></div>
-            </div>
+        <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
+    <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
+    
+    <div class="input-group">
+        <label>NAMA PENYULUH</label>
+        <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
+        <datalist id="daftar_nama">
+            <option value="ABDUL RAHMAN, SP">
+            <option value="ANDI LUTHFIAH, SP">
+            <option value="INDRA YULIANA, S.TP., M.Si.">
+            <option value="NURUL FAHMI, S.P.">
+            <option value="REZKI RAHAYU, S.P.">
+            <option value="RIZAL SMITH ANUGRAH SYAM, S.P.">
+            <option value="SUHADY HAMDAN, S.P.">
+            <option value="SULFIANITA, S.P.">
+            <option value="SURAHMAN, S.TP">
+        </datalist>
+    </div>
+
+    <div class="input-group">
+        <label>NIP (Otomatis/Manual)</label>
+        <input type="text" id="in_nip" oninput="updateLaporan()" placeholder="NIP terisi otomatis / ketik manual">
+    </div>
+
+    <div class="input-group">
+        <label>Jabatan</label>
+        <input type="text" id="in_jabatan" oninput="updateLaporan()"value="Penyuluh Pertanian Ahli Pertama"
+    </div>
+
+    <div class="input-group">
+        <label>Pangkat/Golongan</label>
+        <input type="text" id="in_pangkat" oninput="updateLaporan()" value="Penata Muda (III/a)"
+           
+    </div>
+
+    <div class="input-group">
+        <label>Unit Kerja</label>
+        <input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI">
+    </div>
+</div>
 
             <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
                 <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">II. Kegiatan</h3>
@@ -251,10 +247,21 @@
         };
 
         function updateDataPenyuluh() {
-            const nama = document.getElementById("in_nama").value;
-            document.getElementById("in_nip").value = dataPenyuluh[nama] ? dataPenyuluh[nama].nip : "";
-            updateLaporan();
-        }
+    const nama = document.getElementById("in_nama").value;
+    const nipField = document.getElementById("in_nip");
+
+    // Jika nama ada di database, isi NIP-nya
+    if (dataPenyuluh[nama]) {
+        nipField.value = dataPenyuluh[nama].nip;
+    } 
+    // Jika tidak ada, jangan paksa kosongkan agar user bisa ketik NIP manual
+    // atau hapus value jika nama benar-benar kosong
+    else if (nama === "") {
+        nipField.value = "";
+    }
+
+    updateLaporan();
+}
 
         function handleFoto(input) {
             const container = document.getElementById('foto_container');

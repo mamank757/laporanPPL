@@ -55,10 +55,16 @@
                 min-height: 297mm !important;
                 display: block !important;
                 position: static !important;
+                color: black !important;
             }
             
-            /* Memastikan teks berwarna hitam saat dicetakan */
-            #report, #report * { color: black !important; }
+            /* Memastikan semua teks di dalam report berwarna hitam pekat saat dicetak */
+            #report, #report * { 
+                color: black !important; 
+                background-color: transparent !important;
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
             tr, .foto-wrap, ul, .sig-section { page-break-inside: avoid; }
         }
 
@@ -83,78 +89,76 @@
         <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Sistem Pelaporan Digital PPL</h2>
         
         <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
-    <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
-    
-    <div class="input-group">
-        <label>NAMA PENYULUH</label>
-        <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
-        <datalist id="daftar_nama">
-            <option value="ABDUL RAHMAN, SP">
-            <option value="ANDI LUTHFIAH, SP">
-            <option value="INDRA YULIANA, S.TP., M.Si.">
-            <option value="NURUL FAHMI, S.P.">
-            <option value="REZKI RAHAYU, S.P.">
-            <option value="RIZAL SMITH ANUGRAH SYAM, S.P.">
-            <option value="SUHADY HAMDAN, S.P.">
-            <option value="SULFIANITA, S.P.">
-            <option value="SURAHMAN, S.TP">
-        </datalist>
-    </div>
-
-    <div class="input-group">
-        <label>NIP (Otomatis/Manual)</label>
-        <input type="text" id="in_nip" oninput="updateLaporan()" placeholder="NIP terisi otomatis / ketik manual">
-    </div>
-
-    <div class="input-group">
-        <label>Jabatan</label>
-        <input type="text" id="in_jabatan" oninput="updateLaporan()"value="Penyuluh Pertanian Ahli Pertama"
-    </div>
-
-    <div class="input-group">
-        <label>Pangkat/Golongan</label>
-        <input type="text" id="in_pangkat" oninput="updateLaporan()" value="Penata Muda (III/a)"
-           
-    </div>
-
-    <div class="input-group">
-        <label>Unit Kerja</label>
-        <input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI">
-    </div>
-</div>
-
-            <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
-                <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">II. Kegiatan</h3>
-                <div class="input-group"><label>Dasar Pelaksanaan</label><input type="text" id="in_dasar" oninput="updateLaporan()" value="Indikator Kinerja Penyuluh Pertanian"></div>
-                <div class="input-group">
-                   <label>Nama Kegiatan</label>
-                    <select id="in_kegiatan" onchange="updateLaporan()">
-                        <option value="">-- Pilih Kegiatan --</option>
-                                               <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
-                        <option value="Pendampingan Hilirisasi Perkebunan">Pendampingan Hilirisasi Perkebunan</option>
-                        <option value="Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak">Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak</option>
-                        <option value="Pendampingan Pemanfaatan Alat dan Mesin Pertanian">Pendampingan Pemanfaatan Alat dan Mesin Pertanian</option>
-                        <option value="Pendampingan RDKK Pupuk Subsidi">Pendampingan RDKK Pupuk Subsidi</option>
-                        <option value="Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)">Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)</option>
-                        <option value="Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan">Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan</option>
-                        <option value="Pendampingan Kinerja Brigade Pangan (BP)">Pendampingan Kinerja Brigade Pangan (BP)</option>
-                        <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
-                <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
-                <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+            <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
+            
+            <div class="input-group">
+                <label>NAMA PENYULUH</label>
+                <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
+                <datalist id="daftar_nama">
+                    <option value="ABDUL RAHMAN, SP">
+                    <option value="ANDI LUTHFIAH, SP">
+                    <option value="INDRA YULIANA, S.TP., M.Si.">
+                    <option value="NURUL FAHMI, S.P.">
+                    <option value="REZKI RAHAYU, S.P.">
+                    <option value="RIZAL SMITH ANUGRAH SYAM, S.P.">
+                    <option value="SUHADY HAMDAN, S.P.">
+                    <option value="SULFIANITA, S.P.">
+                    <option value="SURAHMAN, S.TP">
+                </datalist>
             </div>
 
-            <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30">
-                <h3 class="font-bold text-orange-400 uppercase border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
-                <div class="input-group"><label>TTD Penyuluh (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_ppl')" class="text-xs"></div>
-                <div class="input-group"><label>TTD Koordinator (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs"></div>
-                <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
-                <div class="input-group"><label>Tanggal</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
-                <div class="input-group"><label>Nama Koordinator</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="NAMA KOORDINATOR."></div>
-                <div class="input-group"><label>NIP Koordinator</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
+            <div class="input-group">
+                <label>NIP (Otomatis/Manual)</label>
+                <input type="text" id="in_nip" oninput="updateLaporan()" placeholder="NIP terisi otomatis / ketik manual">
             </div>
+
+            <div class="input-group">
+                <label>Jabatan</label>
+                <input type="text" id="in_jabatan" oninput="updateLaporan()" value="Penyuluh Pertanian Ahli Pertama">
+            </div>
+
+            <div class="input-group">
+                <label>Pangkat/Golongan</label>
+                <input type="text" id="in_pangkat" oninput="updateLaporan()" value="Penata Muda (III/a)">
+            </div>
+
+            <div class="input-group">
+                <label>Unit Kerja</label>
+                <input type="text" id="in_unit" oninput="updateLaporan()" value="Kementerian Pertanian RI">
+            </div>
+        </div>
+
+        <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800 mt-4">
+            <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">II. Kegiatan</h3>
+            <div class="input-group"><label>Dasar Pelaksanaan</label><input type="text" id="in_dasar" oninput="updateLaporan()" value="Indikator Kinerja Penyuluh Pertanian"></div>
+            <div class="input-group">
+               <label>Nama Kegiatan</label>
+                <select id="in_kegiatan" onchange="updateLaporan()">
+                    <option value="">-- Pilih Kegiatan --</option>
+                    <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
+                    <option value="Pendampingan Hilirisasi Perkebunan">Pendampingan Hilirisasi Perkebunan</option>
+                    <option value="Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak">Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak</option>
+                    <option value="Pendampingan Pemanfaatan Alat dan Mesin Pertanian">Pendampingan Pemanfaatan Alat dan Mesin Pertanian</option>
+                    <option value="Pendampingan RDKK Pupuk Subsidi">Pendampingan RDKK Pupuk Subsidi</option>
+                    <option value="Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)">Pendampingan Survey Lokasi Cetak Sawah Rakyat (CSR)</option>
+                    <option value="Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan">Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan</option>
+                    <option value="Pendampingan Kinerja Brigade Pangan (BP)">Pendampingan Kinerja Brigade Pangan (BP)</option>
+                    <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
+                </select>
+            </div>
+            <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
+            <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
+            <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+        </div>
+
+        <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30 mt-4">
+            <h3 class="font-bold text-orange-400 uppercase border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
+            <div class="input-group"><label>TTD Penyuluh (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_ppl')" class="text-xs"></div>
+            <div class="input-group"><label>TTD Koordinator (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs"></div>
+            <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
+            <div class="input-group"><label>Tanggal</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
+            <div class="input-group"><label>Nama Koordinator</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Nama Koordinator"></div>
+            <div class="input-group"><label>NIP Koordinator</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
         </div>
 
         <div class="mt-6 space-y-4">
@@ -247,21 +251,12 @@
         };
 
         function updateDataPenyuluh() {
-    const nama = document.getElementById("in_nama").value;
-    const nipField = document.getElementById("in_nip");
-
-    // Jika nama ada di database, isi NIP-nya
-    if (dataPenyuluh[nama]) {
-        nipField.value = dataPenyuluh[nama].nip;
-    } 
-    // Jika tidak ada, jangan paksa kosongkan agar user bisa ketik NIP manual
-    // atau hapus value jika nama benar-benar kosong
-    else if (nama === "") {
-        nipField.value = "";
-    }
-
-    updateLaporan();
-}
+            const nama = document.getElementById("in_nama").value;
+            const nipField = document.getElementById("in_nip");
+            if (dataPenyuluh[nama]) { nipField.value = dataPenyuluh[nama].nip; } 
+            else if (nama === "") { nipField.value = ""; }
+            updateLaporan();
+        }
 
         function handleFoto(input) {
             const container = document.getElementById('foto_container');
@@ -284,7 +279,6 @@
 
         function updateLaporan() {
             const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_nama', 'koor_nip', 'dasar'];
-            
             const tglManual = document.getElementById('in_tgl_ttd_manual').value;
             let tglTampil = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
             if (tglManual) {

@@ -344,6 +344,7 @@
                 document.getElementById('in_masalah').value = result.masalah.join('\n');
                 document.getElementById('in_upaya').value = result.upaya.join('\n');
                 updateLaporan();
+                 alert("✅ Narasi Laporan Berhasil Dibuat!");
             } catch (e) { alert("AI Error. Cek koneksi/API Key."); } 
             finally { btn.disabled = false; loader.classList.add('hidden'); }
         }

@@ -39,7 +39,7 @@
             }
         }
 
-        /* --- PERBAIKAN UTAMA: PRINT SETTINGS --- */
+        /* --- PRINT SETTINGS --- */
         @media print {
             @page { size: A4; margin: 0; }
             body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
@@ -58,7 +58,6 @@
                 color: black !important;
             }
             
-            /* Memastikan semua teks di dalam report berwarna hitam pekat saat dicetak */
             #report, #report * { 
                 color: black !important; 
                 background-color: transparent !important;
@@ -96,19 +95,19 @@
                 <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
                 <datalist id="daftar_nama">
                    <option value="">-- Pilih Nama --</option>
-    <option>ABDUL RAHMAN, SP</option>
-    <option>A. FATHUR MUH. ISHAQ B, S.ST., M.Si</option>
-    <option>ANDI LUTHFIAH, SP</option>
-    <option>FITRIYANTI HASNURI, S.TP</option>
-    <option>INDRA YULIANA, S.TP., M.Si.</option>
-    <option>MIFTAHUL KHAIR, S.P.</option>
-    <option>NURUL FAHMI, S.P.</option>
-    <option>REZKI RAHAYU, S.P.</option>
-    <option>RIZAL SMITH ANUGRAH SYAM, S.P.</option>
-    <option>SUHADY HAMDAN, S.P.</option>
-    <option>SULFIANITA, S.P.</option>
-    <option>SURAHMAN, S.TP</option>
-    <option>UMAR, SP</option>
+                    <option>ABDUL RAHMAN, SP</option>
+                    <option>A. FATHUR MUH. ISHAQ B, S.ST., M.Si</option>
+                    <option>ANDI LUTHFIAH, SP</option>
+                    <option>FITRIYANTI HASNURI, S.TP</option>
+                    <option>INDRA YULIANA, S.TP., M.Si.</option>
+                    <option>MIFTAHUL KHAIR, S.P.</option>
+                    <option>NURUL FAHMI, S.P.</option>
+                    <option>REZKI RAHAYU, S.P.</option>
+                    <option>RIZAL SMITH ANUGRAH SYAM, S.P.</option>
+                    <option>SUHADY HAMDAN, S.P.</option>
+                    <option>SULFIANITA, S.P.</option>
+                    <option>SURAHMAN, S.TP</option>
+                    <option>UMAR, SP</option>
                 </datalist>
             </div>
 
@@ -151,6 +150,7 @@
                     <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
                 </select>
             </div>
+            <div class="input-group"><label>Tanggal Kegiatan</label><input type="date" id="in_tgl_kegiatan" onchange="updateLaporan()"></div>
             <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
             <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
             <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
@@ -161,7 +161,7 @@
             <div class="input-group"><label>TTD Penyuluh (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_ppl')" class="text-xs"></div>
             <div class="input-group"><label>TTD Koordinator (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs"></div>
             <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
-            <div class="input-group"><label>Tanggal</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
+            <div class="input-group"><label>Tanggal Pengesahan (TTD)</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
             <div class="input-group"><label>Nama Koordinator</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Nama Koordinator"></div>
             <div class="input-group"><label>NIP Koordinator</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
         </div>
@@ -200,7 +200,7 @@
                 <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td>: <span id="out_dasar"></span></td></tr>
                 <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td>: <span id="out_kegiatan"></span></td></tr>
                 <tr><td class="font-bold">4.</td><td colspan="2" class="font-bold pt-2">Pelaksanaan</td></tr>
-                <tr><td></td><td>a. Waktu</td><td>: <span id="out_tgl"></span></td></tr>
+                <tr><td></td><td>a. Waktu</td><td>: <span id="out_tgl_kegiatan"></span></td></tr>
                 <tr><td></td><td>b. Tempat/Lokasi</td><td>: <span id="out_lokasi"></span></td></tr>
                 <tr><td></td><td>c. Peserta</td><td>: <span id="out_peserta"></span></td></tr>
                 <tr><td class="font-bold">5.</td><td class="font-bold">Hasil Pekerjaan</td><td>: </td></tr>
@@ -244,20 +244,20 @@
 
     <script>
         const dataPenyuluh = {
-          "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
-    "A. FATHUR MUH. ISHAQ B, S.ST., M.Si": { nip: "199604112020121001" },
-    "ANDI LUTHFIAH, SP": { nip: "199307162020122003" },
-    "FITRIYANTI HASNURI, S.TP": { nip: "199409042020122001" },
-    "INDRA YULIANA, S.TP., M.Si.": { nip: "199307062020122001" },
-    "MIFTAHUL KHAIR, S.P.": { nip: "199311192020122003" },
-    "NURUL FAHMI, S.P.": { nip: "198911142020122002" },
-    "REZKI RAHAYU, S.P.": { nip: "199507052020122003" },
-    "RIZAL SMITH ANUGRAH SYAM, S.P.": { nip: "199005152020121001" },
-    "SUHADY HAMDAN, S.P.": { nip: "199202072020121001" },
-    "SULFIANITA, S.P.": { nip: "199505082020122004" },
-    "SURAHMAN, S.TP": { nip: "199203122020121003" },
-    "UMAR, SP": { nip: "199408272020121001" }
-};
+            "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
+            "A. FATHUR MUH. ISHAQ B, S.ST., M.Si": { nip: "199604112020121001" },
+            "ANDI LUTHFIAH, SP": { nip: "199307162020122003" },
+            "FITRIYANTI HASNURI, S.TP": { nip: "199409042020122001" },
+            "INDRA YULIANA, S.TP., M.Si.": { nip: "199307062020122001" },
+            "MIFTAHUL KHAIR, S.P.": { nip: "199311192020122003" },
+            "NURUL FAHMI, S.P.": { nip: "198911142020122002" },
+            "REZKI RAHAYU, S.P.": { nip: "199507052020122003" },
+            "RIZAL SMITH ANUGRAH SYAM, S.P.": { nip: "199005152020121001" },
+            "SUHADY HAMDAN, S.P.": { nip: "199202072020121001" },
+            "SULFIANITA, S.P.": { nip: "199505082020122004" },
+            "SURAHMAN, S.TP": { nip: "199203122020121003" },
+            "UMAR, SP": { nip: "199408272020121001" }
+        };
 
         function updateDataPenyuluh() {
             const nama = document.getElementById("in_nama").value;
@@ -286,14 +286,18 @@
             } else { img.classList.add('hidden'); }
         }
 
+        function formatTanggal(tglString) {
+            if(!tglString) return "-";
+            const d = new Date(tglString);
+            return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
         function updateLaporan() {
             const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_nama', 'koor_nip', 'dasar'];
-            const tglManual = document.getElementById('in_tgl_ttd_manual').value;
-            let tglTampil = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-            if (tglManual) {
-                const d = new Date(tglManual);
-                tglTampil = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-            }
+            
+            // Logika Tanggal
+            const tglKegiatan = document.getElementById('in_tgl_kegiatan').value;
+            const tglTTD = document.getElementById('in_tgl_ttd_manual').value;
 
             fields.forEach(f => {
                 const val = document.getElementById('in_' + f)?.value || "-";
@@ -303,8 +307,9 @@
                 if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
             });
 
-            document.getElementById('out_tgl').innerText = tglTampil;
-            document.getElementById('out_tgl_ttd').innerText = tglTampil;
+            // Update output tanggal secara terpisah
+            document.getElementById('out_tgl_kegiatan').innerText = formatTanggal(tglKegiatan);
+            document.getElementById('out_tgl_ttd').innerText = formatTanggal(tglTTD);
 
             const renderList = (inId, outId) => {
                 const outEl = document.getElementById(outId);

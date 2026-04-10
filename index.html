@@ -95,15 +95,20 @@
                 <label>NAMA PENYULUH</label>
                 <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
                 <datalist id="daftar_nama">
-                    <option value="ABDUL RAHMAN, SP">
-                    <option value="ANDI LUTHFIAH, SP">
-                    <option value="INDRA YULIANA, S.TP., M.Si.">
-                    <option value="NURUL FAHMI, S.P.">
-                    <option value="REZKI RAHAYU, S.P.">
-                    <option value="RIZAL SMITH ANUGRAH SYAM, S.P.">
-                    <option value="SUHADY HAMDAN, S.P.">
-                    <option value="SULFIANITA, S.P.">
-                    <option value="SURAHMAN, S.TP">
+                   <option value="">-- Pilih Nama --</option>
+    <option>ABDUL RAHMAN, SP</option>
+    <option>A. FATHUR MUH. ISHAQ B, S.ST., M.Si</option>
+    <option>ANDI LUTHFIAH, SP</option>
+    <option>FITRIYANTI HASNURI, S.TP</option>
+    <option>INDRA YULIANA, S.TP., M.Si.</option>
+    <option>MIFTAHUL KHAIR, S.P.</option>
+    <option>NURUL FAHMI, S.P.</option>
+    <option>REZKI RAHAYU, S.P.</option>
+    <option>RIZAL SMITH ANUGRAH SYAM, S.P.</option>
+    <option>SUHADY HAMDAN, S.P.</option>
+    <option>SULFIANITA, S.P.</option>
+    <option>SURAHMAN, S.TP</option>
+    <option>UMAR, SP</option>
                 </datalist>
             </div>
 
@@ -239,16 +244,20 @@
 
     <script>
         const dataPenyuluh = {
-            "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
-            "ANDI LUTHFIAH, SP": { nip: "199307162020122003" },
-            "INDRA YULIANA, S.TP., M.Si.": { nip: "199307062020122001" },
-            "NURUL FAHMI, S.P.": { nip: "198911142020122002" },
-            "REZKI RAHAYU, S.P.": { nip: "199507052020122003" },
-            "RIZAL SMITH ANUGRAH SYAM, S.P.": { nip: "199005152020121001" },
-            "SUHADY HAMDAN, S.P.": { nip: "199202072020121001" },
-            "SULFIANITA, S.P.": { nip: "199505082020122004" },
-            "SURAHMAN, S.TP": { nip: "199203122020121003" }
-        };
+          "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
+    "A. FATHUR MUH. ISHAQ B, S.ST., M.Si": { nip: "199604112020121001" },
+    "ANDI LUTHFIAH, SP": { nip: "199307162020122003" },
+    "FITRIYANTI HASNURI, S.TP": { nip: "199409042020122001" },
+    "INDRA YULIANA, S.TP., M.Si.": { nip: "199307062020122001" },
+    "MIFTAHUL KHAIR, S.P.": { nip: "199311192020122003" },
+    "NURUL FAHMI, S.P.": { nip: "198911142020122002" },
+    "REZKI RAHAYU, S.P.": { nip: "199507052020122003" },
+    "RIZAL SMITH ANUGRAH SYAM, S.P.": { nip: "199005152020121001" },
+    "SUHADY HAMDAN, S.P.": { nip: "199202072020121001" },
+    "SULFIANITA, S.P.": { nip: "199505082020122004" },
+    "SURAHMAN, S.TP": { nip: "199203122020121003" },
+    "UMAR, SP": { nip: "199408272020121001" }
+};
 
         function updateDataPenyuluh() {
             const nama = document.getElementById("in_nama").value;

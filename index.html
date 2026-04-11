@@ -350,7 +350,7 @@
                 document.getElementById('in_upaya').value = result.upaya.join('\n');
                 updateLaporan();
                  alert("✅ Narasi Laporan Berhasil Dibuat!");
-            } catch (e) { alert("AI Error. Cek koneksi/API Key."); } 
+            } catch (e) { alert("AI tidak merespon karena banyak pengguna, silakan coba lagi."); } 
             finally { btn.disabled = false; loader.classList.add('hidden'); }
         }
         window.onload = updateLaporan;

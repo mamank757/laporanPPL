@@ -27,17 +27,20 @@
         
         /* --- UKURAN F4 (215mm x 330mm) --- */
         .report-page {
-            background: white; width: 215mm; min-height: 330mm;
-            padding: 20mm; margin: 10px auto; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: white; 
+            width: 215mm; 
+            min-height: 330mm;
+            padding: 25mm 20mm; /* Padding untuk tampilan layar */
+            margin: 10px auto; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
             font-size: 11pt; line-height: 1.4; color: black; position: relative;
-            overflow: hidden;
         }
 
-        /* --- PRINT SETTINGS F4 --- */
+        /* --- PERBAIKAN MARGIN CETAK F4 --- */
         @media print {
             @page { 
                 size: 215mm 330mm; 
-                margin: 0; 
+                margin: 20mm 15mm 20mm 20mm; /* Atas, Kanan, Bawah, Kiri */
             }
             body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
             .no-print, .floating-container { display: none !important; }
@@ -47,9 +50,9 @@
                 transform: none !important; 
                 margin: 0 !important; 
                 box-shadow: none !important; 
-                padding: 20mm !important; 
-                width: 215mm !important; 
-                min-height: 330mm !important;
+                padding: 0 !important; /* Nol karena margin sudah diatur di @page */
+                width: 100% !important; 
+                min-height: auto !important;
                 display: block !important;
                 position: static !important;
                 color: black !important;
@@ -61,6 +64,7 @@
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
             }
+            /* Mencegah elemen terpotong jelek di tengah baris */
             tr, .foto-wrap, ul, .sig-section, p, div { page-break-inside: avoid; }
         }
 
@@ -188,7 +192,7 @@
         </div>
 
         <div class="mt-8 flex flex-col md:flex-row gap-4">
-            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF</button>
+            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF (F4)</button>
         </div>
     </div>
 

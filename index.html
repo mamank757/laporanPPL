@@ -346,12 +346,12 @@
             btn.innerText = "🌀 Menyusun Laporan...";
 
             const promptAI = `Anda adalah pakar Penyuluh Pertanian (PPL) di Kabupaten Wajo. 
-            Buatlah isi laporan untuk kegiatan: ${kegiatan} di lokasi: ${lokasi}.
+            Buatlah isi laporan singkat (2-3 kalimat) untuk kegiatan: ${kegiatan} di lokasi: ${lokasi}.
             
             Wajib berikan respon dalam format JSON murni seperti ini:
             {
-              "hasil": "Tuliskan narasi detail mengenai hasil pekerjaan yang telah dicapai dalam 1 paragraf formal.",
-              "masalah": ["Tuliskan poin masalah teknis"],
+              "hasil": "Tuliskan narasi singkat mengenai hasil pekerjaan yang telah dicapai dalam 2-3 kalimat formal.",
+              "masalah": ["Tuliskan masalah teknis"],
               "upaya": ["Tuliskan solusi untuk masalah"]
             }`;
 

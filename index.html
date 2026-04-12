@@ -24,18 +24,20 @@
         #report table { border-spacing: 0; border-collapse: collapse; width: 100%; }
         #report td { padding-top: 2px; padding-bottom: 2px; line-height: 1.5; vertical-align: top; }
         .report-container { width: 100%; padding: 10px; display: flex; justify-content: center; }
+        
+        /* --- UKURAN F4 (215mm x 330mm) --- */
         .report-page {
-            background: white; width: 210mm; min-height: 297mm;
+            background: white; width: 215mm; min-height: 330mm;
             padding: 20mm; margin: 10px auto; box-shadow: 0 0 20px rgba(0,0,0,0.5);
             font-size: 11pt; line-height: 1.4; color: black; position: relative;
             overflow: hidden;
         }
 
-        /* --- PERBAIKAN MARGIN HALAMAN KEDUA --- */
+        /* --- PRINT SETTINGS F4 --- */
         @media print {
             @page { 
-                size: A4; 
-                margin: 20mm; /* Menetapkan margin fisik kertas */
+                size: 215mm 330mm; 
+                margin: 0; 
             }
             body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
             .no-print, .floating-container { display: none !important; }
@@ -45,25 +47,29 @@
                 transform: none !important; 
                 margin: 0 !important; 
                 box-shadow: none !important; 
-                padding: 0 !important; /* Padding 0 karena margin sudah diatur di @page */
-                width: 100% !important; 
-                min-height: auto !important;
+                padding: 20mm !important; 
+                width: 215mm !important; 
+                min-height: 330mm !important;
                 display: block !important;
+                position: static !important;
                 color: black !important;
             }
             
-            /* Mencegah elemen terpotong di tengah baris */
-            tr, .foto-wrap, ul, .sig-section, p, div { 
-                page-break-inside: avoid; 
+            #report, #report * { 
+                color: black !important; 
+                background-color: transparent !important;
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
             }
+            tr, .foto-wrap, ul, .sig-section, p, div { page-break-inside: avoid; }
         }
 
-        /* Responsive Mobile Preview */
-        @media screen and (max-width: 210mm) {
+        /* Responsive Mobile Preview F4 */
+        @media screen and (max-width: 215mm) {
             .report-container { padding: 0; display: block; overflow-x: hidden; }
             .report-page {
-                transform: scale(calc(100vw / 210mm)); transform-origin: top left;
-                margin: 0; margin-bottom: calc(20px - (297mm * (1 - (100vw / 210mm))));
+                transform: scale(calc(100vw / 215mm)); transform-origin: top left;
+                margin: 0; margin-bottom: calc(20px - (330mm * (1 - (100vw / 215mm))));
                 box-shadow: none;
             }
         }

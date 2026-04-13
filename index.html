@@ -333,55 +333,52 @@
         }
 
         async function generateAI() {
-            const btn = document.getElementById('btn-ai');
-            const loader = document.getElementById('loader');
-            const kegiatan = document.getElementById('in_kegiatan').value;
-            const lokasi = document.getElementById('in_lokasi').value;
-            const webAppUrl = "https://script.google.com/macros/s/AKfycbzASyPnknfQa3T44fGW2iVhzDquyYFIwqczfSMfUuICoENHjwf85XRj6Fpzo-SjtlsdSw/exec";
+    const btn = document.getElementById('btn-ai');
+    const loader = document.getElementById('loader');
+    const kegiatan = document.getElementById('in_kegiatan').value;
+    const lokasi = document.getElementById('in_lokasi').value;
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbz-6MCPvsHCPbtzKVmlBOAb-B-KiwHTSvcSk15hL8HIYPQigcis5RzhUssluKm6D-mr/exec"; // Pastikan URL benar
 
-            if(!kegiatan || !lokasi) return alert("Pilih kegiatan dan isi lokasi terlebih dahulu!");
-            
-            btn.disabled = true; 
-            loader.classList.remove('hidden');
-            btn.innerText = "🌀 Menyusun Laporan...";
+    if (!kegiatan || !lokasi) return alert("Pilih kegiatan dan isi lokasi terlebih dahulu!");
 
-            const promptAI = `Anda adalah pakar Penyuluh Pertanian (PPL) di Kabupaten Wajo. 
-            Buatlah isi laporan singkat (2-3 kalimat) untuk kegiatan: ${kegiatan} di lokasi: ${lokasi}.
-            
-            Wajib berikan respon dalam format JSON murni seperti ini:
-            {
-              "hasil": "Tuliskan narasi singkat mengenai hasil pekerjaan yang telah dicapai dalam 2-3 kalimat formal.",
-              "masalah": ["Tuliskan masalah teknis"],
-              "upaya": ["Tuliskan solusi untuk masalah"]
-            }`;
+    btn.disabled = true;
+    loader.classList.remove('hidden');
+    btn.innerText = "🌀 Menyusun Laporan...";
 
-            try {
-                const response = await fetch(webAppUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ prompt: promptAI })
-                });
+    const promptAI = `Buat laporan PPL Wajo. Kegiatan: ${kegiatan}, Lokasi: ${lokasi}. 
+    Berikan JSON murni tanpa markdown: {"hasil": "...", "masalah": ["..."], "upaya": ["..."]}`;
 
-                const resultRaw = await response.json();
-                let aiContent = resultRaw.candidates[0].content.parts[0].text;
-                aiContent = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
-                const data = JSON.parse(aiContent);
+    try {
+        const response = await fetch(webAppUrl, {
+            method: "POST",
+            body: JSON.stringify({ prompt: promptAI })
+        });
 
-                document.getElementById('in_hasil').value = data.hasil;
-                document.getElementById('in_masalah').value = data.masalah.join('\n');
-                document.getElementById('in_upaya').value = data.upaya.join('\n');
-                
-                updateLaporan();
-                alert("✅ Kolom Pekerjaan, Masalah, & Upaya Berhasil Terisi!");
-            } catch (e) {
-                console.error(e);
-                alert("Terjadi kesalahan teknis AI.");
-            } finally {
-                btn.disabled = false; 
-                loader.classList.add('hidden');
-                btn.innerText = "✨ Generate AI";
-            }
-        }
+        const result = await response.json();
+        
+        // Mengambil teks dari struktur respons Gemini
+        let aiContent = result.candidates[0].content.parts[0].text;
+        
+        // Membersihkan jika AI menyertakan ```json ... ```
+        aiContent = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
+        
+        const data = JSON.parse(aiContent);
+
+        document.getElementById('in_hasil').value = data.hasil;
+        document.getElementById('in_masalah').value = data.masalah.join('\n');
+        document.getElementById('in_upaya').value = data.upaya.join('\n');
+
+        updateLaporan();
+        alert("✅ Berhasil Generate!");
+    } catch (e) {
+        console.error("Error:", e);
+        alert("Gagal terhubung ke AI. Pastikan API Key benar dan Script sudah di-deploy sebagai 'Anyone'.");
+    } finally {
+        btn.disabled = false;
+        loader.classList.add('hidden');
+        btn.innerText = "✨ Generate AI";
+    }
+}
         window.onload = updateLaporan;
     </script>
 </body>

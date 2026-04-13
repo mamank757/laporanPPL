@@ -332,12 +332,14 @@
             renderList('in_upaya', 'out_upaya');
         }
 
-     async function generateAI() {
+    async function generateAI() {
     const btn = document.getElementById('btn-ai');
     const loader = document.getElementById('loader');
     const kegiatan = document.getElementById('in_kegiatan').value;
     const lokasi = document.getElementById('in_lokasi').value;
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyIbWxxEWKvCz0o3CXHfcwTkapt94dXnTLyMvBQ63_X2Ny2tK6_yw3FFOxAy2J8NR6x7g/exec"; // Pastikan ini URL Deployment terbaru
+    
+    // Gunakan URL Web App Script Anda yang terbaru di sini
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbzM2WgrFMawnjRul1FpLIjmdIzME9R3dwWtqgn5c14GHE-YZ2b9Ec4XAcfc0I1OoaJcZg/exec"; 
 
     if (!kegiatan || !lokasi) return alert("Pilih kegiatan dan isi lokasi terlebih dahulu!");
 
@@ -345,10 +347,10 @@
     loader.classList.remove('hidden');
     btn.innerText = "🌀 Menyusun Laporan...";
 
-    // Prompt dipertegas agar hanya menghasilkan JSON
-    const promptAI = `Anda pakar PPL Pertanian di Wajo. Buat laporan kegiatan: ${kegiatan} di ${lokasi}. 
-    Hanya berikan hasil dalam JSON murni tanpa kata-kata lain atau markdown:
-    {"hasil": "narasi 2-3 kalimat", "masalah": ["masalah1"], "upaya": ["solusi1"]}`;
+    // Prompt diperketgas agar output HANYA JSON murni
+    const promptAI = `Tulis laporan PPL Pertanian Wajo. Kegiatan: ${kegiatan}, Lokasi: ${lokasi}. 
+    Berikan JSON murni tanpa markdown, tanpa penjelasan: 
+    {"hasil": "narasi formal", "masalah": ["poin1"], "upaya": ["solusi1"]}`;
 
     try {
         const response = await fetch(webAppUrl, {
@@ -358,24 +360,26 @@
 
         const resultRaw = await response.json();
         
-        // Mengambil teks dari struktur respons Gemini
+        // Cek struktur respons Gemini
+        if (!resultRaw.candidates) throw new Error("Format respons AI tidak dikenali.");
+        
         let aiContent = resultRaw.candidates[0].content.parts[0].text;
         
-        // Membersihkan jika AI masih nakal memberikan markdown ```json
+        // Membersihkan jika AI menyertakan tanda ```json atau teks lain
         aiContent = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
         
         const data = JSON.parse(aiContent);
 
-        // Isi ke elemen form
+        // Input otomatis ke form
         document.getElementById('in_hasil').value = data.hasil || "";
-        document.getElementById('in_masalah').value = (data.masalah || []).join('\n');
-        document.getElementById('in_upaya').value = (data.upaya || []).join('\n');
+        document.getElementById('in_masalah').value = Array.isArray(data.masalah) ? data.masalah.join('\n') : data.masalah;
+        document.getElementById('in_upaya').value = Array.isArray(data.upaya) ? data.upaya.join('\n') : data.upaya;
 
         updateLaporan();
-        alert("✅ Laporan berhasil disusun oleh AI!");
+        alert("✅ Laporan berhasil disusun!");
     } catch (e) {
-        console.error("Detail Error:", e);
-        alert("Gagal Generate. Pastikan URL Script benar dan izin 'Anyone' sudah diaktifkan.");
+        console.error("Error Detail:", e);
+        alert("Gagal terhubung ke AI. Pastikan URL Script benar dan API Key aktif.");
     } finally {
         btn.disabled = false;
         loader.classList.add('hidden');

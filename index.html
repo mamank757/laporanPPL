@@ -332,12 +332,12 @@
             renderList('in_upaya', 'out_upaya');
         }
 
-        async function generateAI() {
+     async function generateAI() {
     const btn = document.getElementById('btn-ai');
     const loader = document.getElementById('loader');
     const kegiatan = document.getElementById('in_kegiatan').value;
     const lokasi = document.getElementById('in_lokasi').value;
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbz-6MCPvsHCPbtzKVmlBOAb-B-KiwHTSvcSk15hL8HIYPQigcis5RzhUssluKm6D-mr/exec"; // Pastikan URL benar
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyIbWxxEWKvCz0o3CXHfcwTkapt94dXnTLyMvBQ63_X2Ny2tK6_yw3FFOxAy2J8NR6x7g/exec"; // Pastikan ini URL Deployment terbaru
 
     if (!kegiatan || !lokasi) return alert("Pilih kegiatan dan isi lokasi terlebih dahulu!");
 
@@ -345,8 +345,10 @@
     loader.classList.remove('hidden');
     btn.innerText = "🌀 Menyusun Laporan...";
 
-    const promptAI = `Buat laporan PPL Wajo. Kegiatan: ${kegiatan}, Lokasi: ${lokasi}. 
-    Berikan JSON murni tanpa markdown: {"hasil": "...", "masalah": ["..."], "upaya": ["..."]}`;
+    // Prompt dipertegas agar hanya menghasilkan JSON
+    const promptAI = `Anda pakar PPL Pertanian di Wajo. Buat laporan kegiatan: ${kegiatan} di ${lokasi}. 
+    Hanya berikan hasil dalam JSON murni tanpa kata-kata lain atau markdown:
+    {"hasil": "narasi 2-3 kalimat", "masalah": ["masalah1"], "upaya": ["solusi1"]}`;
 
     try {
         const response = await fetch(webAppUrl, {
@@ -354,25 +356,26 @@
             body: JSON.stringify({ prompt: promptAI })
         });
 
-        const result = await response.json();
+        const resultRaw = await response.json();
         
         // Mengambil teks dari struktur respons Gemini
-        let aiContent = result.candidates[0].content.parts[0].text;
+        let aiContent = resultRaw.candidates[0].content.parts[0].text;
         
-        // Membersihkan jika AI menyertakan ```json ... ```
+        // Membersihkan jika AI masih nakal memberikan markdown ```json
         aiContent = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
         
         const data = JSON.parse(aiContent);
 
-        document.getElementById('in_hasil').value = data.hasil;
-        document.getElementById('in_masalah').value = data.masalah.join('\n');
-        document.getElementById('in_upaya').value = data.upaya.join('\n');
+        // Isi ke elemen form
+        document.getElementById('in_hasil').value = data.hasil || "";
+        document.getElementById('in_masalah').value = (data.masalah || []).join('\n');
+        document.getElementById('in_upaya').value = (data.upaya || []).join('\n');
 
         updateLaporan();
-        alert("✅ Berhasil Generate!");
+        alert("✅ Laporan berhasil disusun oleh AI!");
     } catch (e) {
-        console.error("Error:", e);
-        alert("Gagal terhubung ke AI. Pastikan API Key benar dan Script sudah di-deploy sebagai 'Anyone'.");
+        console.error("Detail Error:", e);
+        alert("Gagal Generate. Pastikan URL Script benar dan izin 'Anyone' sudah diaktifkan.");
     } finally {
         btn.disabled = false;
         loader.classList.add('hidden');

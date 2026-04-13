@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page_title">Laporan Pendampingan PPL MILENIAL WAJO - DIGITAL</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mamank757/laporantriwulan/99a53aa811aa2ca20fd3c0c0ba2194be56d2b5e6/Gemini_Generated_Image_o9onvjo9onvjo9on%20(1)%20(1).png">
+    <title id="page_title">Laporan PPL - DIGITAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -24,24 +23,25 @@
         #report table { border-spacing: 0; border-collapse: collapse; width: 100%; }
         #report td { padding-top: 2px; padding-bottom: 2px; line-height: 1.5; vertical-align: top; }
         .report-container { width: 100%; padding: 10px; display: flex; justify-content: center; }
-        
-        /* --- UKURAN F4 (215mm x 330mm) --- */
         .report-page {
-            background: white; 
-            width: 215mm; 
-            min-height: 330mm;
-            padding: 25mm 20mm; /* Padding untuk tampilan layar */
-            margin: 10px auto; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: white; width: 210mm; min-height: 297mm;
+            padding: 20mm; margin: 10px auto; box-shadow: 0 0 20px rgba(0,0,0,0.5);
             font-size: 11pt; line-height: 1.4; color: black; position: relative;
         }
 
-        /* --- PERBAIKAN MARGIN CETAK F4 --- */
-        @media print {
-            @page { 
-                size: 215mm 330mm; 
-                margin: 20mm 15mm 20mm 20mm; /* Atas, Kanan, Bawah, Kiri */
+        /* Responsive Mobile Preview */
+        @media screen and (max-width: 210mm) {
+            .report-container { padding: 0; display: block; overflow-x: hidden; }
+            .report-page {
+                transform: scale(calc(100vw / 210mm)); transform-origin: top left;
+                margin: 0; margin-bottom: calc(20px - (297mm * (1 - (100vw / 210mm))));
+                box-shadow: none;
             }
+        }
+
+        /* --- PRINT SETTINGS --- */
+        @media print {
+            @page { size: A4; margin: 0; }
             body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
             .no-print, .floating-container { display: none !important; }
             
@@ -50,9 +50,9 @@
                 transform: none !important; 
                 margin: 0 !important; 
                 box-shadow: none !important; 
-                padding: 0 !important; /* Nol karena margin sudah diatur di @page */
-                width: 100% !important; 
-                min-height: auto !important;
+                padding: 20mm !important; 
+                width: 210mm !important; 
+                min-height: 297mm !important;
                 display: block !important;
                 position: static !important;
                 color: black !important;
@@ -64,18 +64,7 @@
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
             }
-            /* Mencegah elemen terpotong jelek di tengah baris */
-            tr, .foto-wrap, ul, .sig-section, p, div { page-break-inside: avoid; }
-        }
-
-        /* Responsive Mobile Preview F4 */
-        @media screen and (max-width: 215mm) {
-            .report-container { padding: 0; display: block; overflow-x: hidden; }
-            .report-page {
-                transform: scale(calc(100vw / 215mm)); transform-origin: top left;
-                margin: 0; margin-bottom: calc(20px - (330mm * (1 - (100vw / 215mm))));
-                box-shadow: none;
-            }
+            tr, .foto-wrap, ul, .sig-section { page-break-inside: avoid; }
         }
 
         /* Input UI */
@@ -96,7 +85,7 @@
     </div>
 
     <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 rounded-xl shadow-2xl border-t-4 border-blue-600">
-        <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Form Digital Pelaporan Pendampingan PPL - King Mamank</h2>
+        <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Sistem Pelaporan Digital PPL</h2>
         
         <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
             <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
@@ -105,7 +94,7 @@
                 <label>NAMA PENYULUH</label>
                 <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
                 <datalist id="daftar_nama">
-                    <option value="">-- Pilih Nama --</option>
+                   <option value="">-- Pilih Nama --</option>
                     <option>ABDUL RAHMAN, SP</option>
                     <option>A. FATHUR MUH. ISHAQ B, S.ST., M.Si</option>
                     <option>ANDI LUTHFIAH, SP</option>
@@ -192,7 +181,7 @@
         </div>
 
         <div class="mt-8 flex flex-col md:flex-row gap-4">
-            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF (F4)</button>
+            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF</button>
         </div>
     </div>
 
@@ -306,6 +295,7 @@
         function updateLaporan() {
             const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_nama', 'koor_nip', 'dasar'];
             
+            // Logika Tanggal
             const tglKegiatan = document.getElementById('in_tgl_kegiatan').value;
             const tglTTD = document.getElementById('in_tgl_ttd_manual').value;
 
@@ -317,6 +307,7 @@
                 if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
             });
 
+            // Update output tanggal secara terpisah
             document.getElementById('out_tgl_kegiatan').innerText = formatTanggal(tglKegiatan);
             document.getElementById('out_tgl_ttd').innerText = formatTanggal(tglTTD);
 
@@ -332,60 +323,36 @@
             renderList('in_upaya', 'out_upaya');
         }
 
-    async function generateAI() {
-    const btn = document.getElementById('btn-ai');
-    const loader = document.getElementById('loader');
-    const kegiatan = document.getElementById('in_kegiatan').value;
-    const lokasi = document.getElementById('in_lokasi').value;
-    
-    // Gunakan URL Web App Script Anda yang terbaru di sini
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzM2WgrFMawnjRul1FpLIjmdIzME9R3dwWtqgn5c14GHE-YZ2b9Ec4XAcfc0I1OoaJcZg/exec"; 
+        async function generateAI() {
+            const btn = document.getElementById('btn-ai');
+            const loader = document.getElementById('loader');
+            const kegiatan = document.getElementById('in_kegiatan').value;
+            const lokasi = document.getElementById('in_lokasi').value;
+            const key = "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"; 
 
-    if (!kegiatan || !lokasi) return alert("Pilih kegiatan dan isi lokasi terlebih dahulu!");
+            if(!kegiatan || !lokasi) return alert("Isi kegiatan dan lokasi!");
+            btn.disabled = true; loader.classList.remove('hidden');
 
-    btn.disabled = true;
-    loader.classList.remove('hidden');
-    btn.innerText = "🌀 Menyusun Laporan...";
-
-    // Prompt diperketgas agar output HANYA JSON murni
-    const promptAI = `Tulis laporan PPL Pertanian Wajo. Kegiatan: ${kegiatan}, Lokasi: ${lokasi}. 
-    Berikan JSON murni tanpa markdown, tanpa penjelasan: 
-    {"hasil": "narasi formal", "masalah": ["poin1"], "upaya": ["solusi1"]}`;
-
-    try {
-        const response = await fetch(webAppUrl, {
-            method: "POST",
-            body: JSON.stringify({ prompt: promptAI })
-        });
-
-        const resultRaw = await response.json();
-        
-        // Cek struktur respons Gemini
-        if (!resultRaw.candidates) throw new Error("Format respons AI tidak dikenali.");
-        
-        let aiContent = resultRaw.candidates[0].content.parts[0].text;
-        
-        // Membersihkan jika AI menyertakan tanda ```json atau teks lain
-        aiContent = aiContent.replace(/```json/g, "").replace(/```/g, "").trim();
-        
-        const data = JSON.parse(aiContent);
-
-        // Input otomatis ke form
-        document.getElementById('in_hasil').value = data.hasil || "";
-        document.getElementById('in_masalah').value = Array.isArray(data.masalah) ? data.masalah.join('\n') : data.masalah;
-        document.getElementById('in_upaya').value = Array.isArray(data.upaya) ? data.upaya.join('\n') : data.upaya;
-
-        updateLaporan();
-        alert("✅ Laporan berhasil disusun!");
-    } catch (e) {
-        console.error("Error Detail:", e);
-        alert("Gagal terhubung ke AI. Pastikan URL Script benar dan API Key aktif.");
-    } finally {
-        btn.disabled = false;
-        loader.classList.add('hidden');
-        btn.innerText = "✨ Generate AI";
-    }
-}
+            try {
+                const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+                    body: JSON.stringify({ 
+                        model: "llama-3.3-70b-versatile", 
+                        messages: [{ role: "user", content: `Buat laporan PPL singkat kegiatan ${kegiatan} di ${lokasi}. Gunakan bahasa formal penyuluhan. Format JSON: {"deskripsi":"", "masalah":[], "upaya":[]}` }],
+                        response_format: { type: "json_object" }
+                    })
+                });
+                const data = await res.json();
+                const result = JSON.parse(data.choices[0].message.content);
+                document.getElementById('in_hasil').value = result.deskripsi;
+                document.getElementById('in_masalah').value = result.masalah.join('\n');
+                document.getElementById('in_upaya').value = result.upaya.join('\n');
+                updateLaporan();
+                 alert("✅ Narasi Laporan Berhasil Dibuat!");
+            } catch (e) { alert("AI tidak merespon karena banyak pengguna, silakan coba lagi."); } 
+            finally { btn.disabled = false; loader.classList.add('hidden'); }
+        }
         window.onload = updateLaporan;
     </script>
 </body>

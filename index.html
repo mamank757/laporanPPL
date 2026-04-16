@@ -107,16 +107,20 @@
     </div>
 
     <div class="no-print max-w-6xl mx-auto p-4 md:p-6 bg-[#1e1e1e] my-4 rounded-xl shadow-2xl border-t-4 border-blue-600">
-        <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Form Laporan Kegiatan Pendampingan PPL</h2>
+        <h2 class="text-xl font-bold mb-6 text-blue-400 flex items-center">💻 Form Laporan Kegiatan Pendampingan PPL Milenial</h2><p class="text-gray-400 text-sm mt-1">
+        FORM EKSKLUSIF, SILAKAN GUNAKAN 
+        <a href="https://mamank757.github.io/laporan" class="text-emerald-400 hover:text-emerald-300 underline transition-colors">
+            FORM PENDAMPINGAN (UMUM)
+        </a>
+    </p>
         
         <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800">
             <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">I. Identitas</h3>
             
             <div class="input-group">
                 <label>NAMA PENYULUH</label>
-                <input type="text" id="in_nama" list="daftar_nama" oninput="updateDataPenyuluh()" placeholder="Pilih atau Ketik Nama">
-                <datalist id="daftar_nama">
-                   <option value="">-- Pilih Nama --</option>
+               <select id="in_nama" onchange="updateDataPenyuluh()">
+    <option value="">-- Pilih Nama --</option>
                     <option>ABDUL RAHMAN, SP</option>
                     <option>A. FATHUR MUH. ISHAQ B, S.ST., M.Si</option>
                     <option>ANDI LUTHFIAH, SP</option>
@@ -130,7 +134,7 @@
                     <option>SULFIANITA, S.P.</option>
                     <option>SURAHMAN, S.TP</option>
                     <option>UMAR, SP</option>
-                </datalist>
+                </select>
             </div>
 
             <div class="input-group">

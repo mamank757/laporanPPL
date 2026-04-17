@@ -366,56 +366,63 @@
         }
 
 // Fungsi generateAI yang diperbarui agar tidak menimpa kolom masalah
+// VERSI UNTUK HTML DI GITHUB (MENGGUNAKAN FETCH)
 async function generateAI() {
     const btn = document.getElementById('btn-ai');
     const loader = document.getElementById('loader');
     const kegiatan = document.getElementById('in_kegiatan').value;
     const lokasi = document.getElementById('in_lokasi').value;
     const masalah = document.getElementById('in_masalah').value;
-    const key = "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"; // Ganti dengan API Key yang valid
 
-    // Validasi agar input tidak boleh kosong
-    if (!kegiatan) return alert("Silakan pilih JENIS KEGIATAN terlebih dahulu!");
-    if (!lokasi) return alert("Silakan isi LOKASI kegiatan!");
-    if (!masalah.trim()) return alert("Silakan isi kolom PERMASALAHAN terlebih dahulu agar AI bisa memberikan solusi yang akurat!");
-    
-    btn.disabled = true; 
+    // 1. MASUKKAN URL WEB APP GAS BAPAK DI SINI
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxH6KVbHChCf7d_OWo5-aVP8_BRLax5wBp60jsadujlyNRI1zv3V-xOfejHqDvU27GC/exec"; 
+
+    // Validasi input
+    if (!kegiatan) return alert("Silakan pilih JENIS KEGIATAN!");
+    if (!lokasi) return alert("Silakan isi LOKASI!");
+    if (!masalah.trim()) return alert("Silakan isi kolom PERMASALAHAN!");
+
+    // Set tampilan Loading
+    btn.disabled = true;
     loader.classList.remove('hidden');
     btn.classList.add('opacity-50', 'cursor-not-allowed');
 
-    const promptUser = `Buat laporan formal PPL. 
-    Kegiatan: ${kegiatan} 
-    Lokasi: ${lokasi}. 
-    Permasalahan yang ditemukan: ${masalah}. 
-    Berikan deskripsi hasil pekerjaan yang formal (bahasa baku) dan poin-poin upaya tindak lanjut yang konkret. 
-    Format JSON: {"deskripsi":"", "upaya":[]}`;
+    // Menyusun Prompt agar AI memberikan format JSON yang bisa kita pecah
+    const promptUser = `Buat laporan formal Penyuluh Pertanian (PPL). 
+    Kegiatan: ${kegiatan}. Lokasi: ${lokasi}. Permasalahan: ${masalah}. 
+    Berikan deskripsi hasil pekerjaan yang formal dan poin-poin upaya tindak lanjut.
+    WAJIB JAWAB DALAM FORMAT JSON SEPERTI INI: {"deskripsi":"...", "upaya":["poin 1", "poin 2"]}`;
 
     try {
-        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-            body: JSON.stringify({ 
-                model: "llama-3.3-70b-versatile", 
-                messages: [{ role: "user", content: promptUser }],
-                response_format: { type: "json_object" }
-            })
+        const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify({ prompt: promptUser }) // Mengirim data ke GAS (data.prompt)
         });
 
-        if (!res.ok) throw new Error("API Error");
-
         const data = await res.json();
-        const result = JSON.parse(data.choices[0].message.content);
+        
+        // Mengambil teks mentah dari respon Groq
+        const contentRaw = data.choices[0].message.content;
+        
+        // Membersihkan jika AI memberikan backticks (```json ... ```)
+        const cleanJson = contentRaw.replace(/```json|```/g, "").trim();
+        const result = JSON.parse(cleanJson);
 
+        // Masukkan ke kolom input HTML
         document.getElementById('in_hasil').value = result.deskripsi;
         document.getElementById('in_upaya').value = result.upaya.join('\n');
         
+        // Update tampilan preview laporan
         updateLaporan();
-        alert("✅ Deskripsi dan Tindak Lanjut berhasil dibuat!");
-    } catch (e) { 
-        alert("Gagal terhubung ke AI. Pastikan koneksi internet stabil atau API Key benar."); 
-    } finally { 
-        btn.disabled = false; 
-        loader.classList.add('hidden'); 
+        alert("✅ Laporan Berhasil Disusun oleh AI!");
+
+    } catch (e) {
+        console.error(e);
+        alert("Gagal memuat AI. Pastikan Web App GAS sudah di-deploy sebagai 'Anyone'.");
+    } finally {
+        // Kembalikan tombol ke keadaan normal
+        btn.disabled = false;
+        loader.classList.add('hidden');
         btn.classList.remove('opacity-50', 'cursor-not-allowed');
     }
 }

@@ -156,14 +156,22 @@
             </div>
         </div>
 
-        <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800 mt-4">
-            <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">II. Kegiatan</h3>
-            <div class="input-group"><label>Dasar Pelaksanaan</label><input type="text" id="in_dasar" oninput="updateLaporan()" value="Indikator Kinerja Penyuluh Pertanian"></div>
-            <div class="input-group">
-               <label>Nama Kegiatan</label>
-                <select id="in_kegiatan" onchange="updateLaporan()">
-                    <option value="">-- Pilih Kegiatan --</option>
-                    <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
+       <div class="space-y-3 bg-[#252525] p-4 rounded-lg border border-gray-800 mt-4">
+    <h3 class="font-bold text-blue-400 uppercase border-b border-gray-700 pb-1">II. Kegiatan</h3>
+    <div class="input-group">
+        <label>TIPE LAPORAN</label>
+        <select id="in_tipe_laporan" onchange="toggleTipeLaporan()">
+            <option value="bulanan">Laporan Bulanan</option>
+            <option value="triwulan">Laporan Triwulan</option>
+        </select>
+    </div>
+
+    <div class="input-group"><label>Dasar Pelaksanaan</label><input type="text" id="in_dasar" oninput="updateLaporan()" value="Indikator Kinerja Penyuluh Pertanian"></div>
+    <div class="input-group">
+        <label>Nama Kegiatan</label>
+        <select id="in_kegiatan" onchange="updateLaporan()">
+            <option value="">-- Pilih Kegiatan --</option>
+           <option value="Pendampingan Peningkatan Produksi Hortikultura">Pendampingan Peningkatan Produksi Hortikultura</option>
                     <option value="Pendampingan Hilirisasi Perkebunan">Pendampingan Hilirisasi Perkebunan</option>
                     <option value="Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak">Pendampingan Penyediaan Benih Dan Bibit Serta Peningkatan Produksi Ternak</option>
                     <option value="Pendampingan Pemanfaatan Alat dan Mesin Pertanian">Pendampingan Pemanfaatan Alat dan Mesin Pertanian</option>
@@ -172,21 +180,43 @@
                     <option value="Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan">Pendampingan Pemanfaatan Irigasi Perpompaan Dan Perpipaan</option>
                     <option value="Pendampingan Kinerja Brigade Pangan (BP)">Pendampingan Kinerja Brigade Pangan (BP)</option>
                     <option value="Pengawalan dan Pendampingan CPCL Bantuan Pemerintah">Pengawalan dan Pendampingan CPCL Bantuan Pemerintah</option>
+                    <option value="Penderasan Materi & Kelompencapir Digital">Penderasan Materi & Kelompencapir Digital</option>
+                    <option value="Pengawalan CPCL Bantuan Pemerintah">Pengawalan CPCL Bantuan Pemerintah</option>
+                    <option value="Pelaksanaan Tugas Fungsi Penyuluhan">Pelaksanaan Tugas Fungsi Penyuluhan</option>
+                        <option value="Laporan Data Statistik Tanaman Perkebunan">Laporan Data Statistik Tanaman Perkebunan</option>
+                        <option value="Laporan Data Statistik Tanaman Pangan">Laporan Data Statistik Tanaman Pangan</option>
+                            <option value="Laporan Data Statistik Tanaman Hortikultura">Laporan Data Statistik Tanaman Hortikultura</option>
+                     
                 </select>
-            </div>
-            <div class="input-group"><label>Tanggal Kegiatan</label><input type="date" id="in_tgl_kegiatan" onchange="updateLaporan()"></div>
-            <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
-            <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
-            <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
-        </div>
+    </div>
 
+    <div id="wrap_tgl_bulanan" class="input-group">
+        <label>Tanggal Kegiatan</label>
+        <input type="date" id="in_tgl_kegiatan" onchange="updateLaporan()">
+    </div>
+
+    <div id="wrap_tgl_triwulan" class="input-group hidden-element">
+        <label>Periode Triwulan</label>
+        <select id="in_periode_triwulan" onchange="updateLaporan()">
+            <option value="Januari - Maret">Januari - Maret</option>
+            <option value="April - Juni">April - Juni</option>
+            <option value="Juli - September">Juli - September</option>
+            <option value="Oktober - Desember">Oktober - Desember</option>
+        </select>
+        <input type="number" id="in_tahun_triwulan" placeholder="Tahun (Cth: 2026)" class="mt-2" oninput="updateLaporan()" value="2026">
+    </div>
+
+    <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
+    <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
+    <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+</div>
         <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30 mt-4">
             <h3 class="font-bold text-orange-400 uppercase border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
             <div class="input-group"><label>TTD Penyuluh (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_ppl')" class="text-xs"></div>
             <div class="input-group"><label>TTD Pejabat Penandatangan (PNG)</label><input type="file" onchange="handleTTD(this, 'out_img_ttd_koor')" class="text-xs"></div>
             <div class="input-group"><label>Tempat TTD</label><input type="text" id="in_tempat_ttd" oninput="updateLaporan()" value="Bola"></div>
             <div class="input-group"><label>Tanggal Pengesahan (TTD)</label><input type="date" id="in_tgl_ttd_manual" onchange="updateLaporan()"></div>
-            <div class="input-group"><label>Jabatan Penandatangan</label><input type="text" id="in_koor_jabatan" oninput="updateLaporan()" value="Koordinator BPP"></div>
+            <div class="input-group"><label>Jabatan Penandatangan</label><input type="text" id="in_koor_jabatan" oninput="updateLaporan()" value="Koordinator BPP ...."></div>
             <div class="input-group"><label>Nama Pejabat Penandatangan</label><input type="text" id="in_koor_nama" oninput="updateLaporan()" value="Samaila"></div>
             <div class="input-group"><label>NIP Pejabat Penandatangan</label><input type="text" id="in_koor_nip" oninput="updateLaporan()" value="19xxxxxxxxxxxxxx"></div>
         </div>
@@ -333,35 +363,65 @@
             const d = new Date(tglString);
             return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
         }
+// Fungsi untuk ganti tampilan input berdasarkan pilihan
+function toggleTipeLaporan() {
+    const tipe = document.getElementById("in_tipe_laporan").value;
+    const wrapBulanan = document.getElementById("wrap_tgl_bulanan");
+    const wrapTriwulan = document.getElementById("wrap_tgl_triwulan");
 
-        function updateLaporan() {
-            const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_nama', 'koor_nip', 'koor_jabatan', 'dasar'];
-            
-            const tglKegiatan = document.getElementById('in_tgl_kegiatan').value;
-            const tglTTD = document.getElementById('in_tgl_ttd_manual').value;
+    if (tipe === "bulanan") {
+        wrapBulanan.classList.remove("hidden-element");
+        wrapTriwulan.classList.add("hidden-element");
+    } else {
+        wrapBulanan.classList.add("hidden-element");
+        wrapTriwulan.classList.remove("hidden-element");
+    }
+    updateLaporan();
+}
 
-            fields.forEach(f => {
-                const val = document.getElementById('in_' + f)?.value || "-";
-                if (document.getElementById('out_' + f)) document.getElementById('out_' + f).innerText = val;
-                if(f === 'nama') document.getElementById('sig_nama').innerText = val;
-                if(f === 'nip') document.getElementById('sig_nip').innerText = val;
-                if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
-            });
+// Update fungsi updateLaporan yang lama
+function updateLaporan() {
+    const fields = ['nama', 'nip', 'pangkat', 'jabatan', 'unit', 'kegiatan', 'lokasi', 'peserta', 'tempat_ttd', 'hasil', 'koor_nama', 'koor_nip', 'koor_jabatan', 'dasar'];
+    
+    // Logika Waktu Laporan
+    const tipe = document.getElementById('in_tipe_laporan').value;
+    let textWaktu = "-";
 
-            document.getElementById('out_tgl_kegiatan').innerText = formatTanggal(tglKegiatan);
-            document.getElementById('out_tgl_ttd').innerText = formatTanggal(tglTTD);
+    if (tipe === "bulanan") {
+        const tglValue = document.getElementById('in_tgl_kegiatan').value;
+        textWaktu = formatTanggal(tglValue);
+    } else {
+        const periode = document.getElementById('in_periode_triwulan').value;
+        const tahun = document.getElementById('in_tahun_triwulan').value;
+        textWaktu = periode + " " + tahun;
+    }
 
-            const renderList = (inId, outId) => {
-                const outEl = document.getElementById(outId);
-                const inEl = document.getElementById(inId);
-                outEl.innerHTML = "";
-                inEl.value.split('\n').filter(t => t.trim() !== "").forEach(t => {
-                    const li = document.createElement('li'); li.innerText = t; outEl.appendChild(li);
-                });
-            };
-            renderList('in_masalah', 'out_masalah');
-            renderList('in_upaya', 'out_upaya');
-        }
+    const tglTTD = document.getElementById('in_tgl_ttd_manual').value;
+
+    fields.forEach(f => {
+        const val = document.getElementById('in_' + f)?.value || "-";
+        if (document.getElementById('out_' + f)) document.getElementById('out_' + f).innerText = val;
+        if(f === 'nama') document.getElementById('sig_nama').innerText = val;
+        if(f === 'nip') document.getElementById('sig_nip').innerText = val;
+        if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
+    });
+
+    // Menampilkan ke Preview Laporan
+    document.getElementById('out_tgl_kegiatan').innerText = textWaktu;
+    document.getElementById('out_tgl_ttd').innerText = formatTanggal(tglTTD);
+
+    const renderList = (inId, outId) => {
+        const outEl = document.getElementById(outId);
+        const inEl = document.getElementById(inId);
+        if(!outEl || !inEl) return;
+        outEl.innerHTML = "";
+        inEl.value.split('\n').filter(t => t.trim() !== "").forEach(t => {
+            const li = document.createElement('li'); li.innerText = t; outEl.appendChild(li);
+        });
+    };
+    renderList('in_masalah', 'out_masalah');
+    renderList('in_upaya', 'out_upaya');
+}
 
 // Fungsi generateAI yang diperbarui agar tidak menimpa kolom masalah
 // VERSI UNTUK HTML DI GITHUB (MENGGUNAKAN FETCH)

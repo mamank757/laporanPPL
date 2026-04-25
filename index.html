@@ -40,32 +40,47 @@
         }
 
         /* --- PRINT SETTINGS --- */
-        @media print {
-            @page { size: F4; margin: 0; }
-            body { background: white !important; color: black !important; margin: 0 !important; padding: 0 !important; }
-            .no-print, .floating-container { display: none !important; }
-            
-            .report-container { padding: 0 !important; margin: 0 !important; display: block !important; width: 100% !important; }
-            .report-page { 
-                transform: none !important; 
-                margin: 0 !important; 
-                box-shadow: none !important; 
-                padding: 15mm !important; 
-                width: 215mm !important; 
-                min-height: 330mm !important;
-                display: block !important;
-                position: static !important;
-                color: black !important;
-            }
-            
-            #report, #report * { 
-                color: black !important; 
-                background-color: transparent !important;
-                -webkit-print-color-adjust: exact; 
-                print-color-adjust: exact;
-            }
-            tr, .foto-wrap, ul, .sig-section { page-break-inside: avoid; }
-        }
+        /* --- PRINT SETTINGS --- */
+/* --- PRINT SETTINGS --- */
+@media print {
+    @page { 
+        size: F4; 
+        margin: 20mm; 
+    }
+
+    body { 
+        background: white !important; 
+        color: black !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    
+    /* Perbaikan di sini: Tambahkan Flex agar TTD tetap kiri-kanan saat diprint */
+    .sig-section {
+        display: flex !important;
+        justify-content: space-between !important;
+        page-break-inside: avoid !important;
+        margin-top: 30px !important;
+        border: none !important;
+    }
+
+    .no-print, .floating-container { display: none !important; }
+
+    .report-page { 
+        width: 100% !important;
+        min-height: initial !important; 
+        padding: 0 !important; 
+        margin: 0 !important;
+        box-shadow: none !important;
+        display: block !important;
+        position: static !important;
+    }
+
+    /* Pastikan elemen ini tidak terbelah */
+    tr, .foto-wrap, ul, .sig-section, p { 
+        page-break-inside: avoid !important; 
+    }
+}
 
         /* Input UI */
         .input-group label { display: block; font-size: 0.75rem; font-weight: bold; color: #bbb; margin-bottom: 2px; }
@@ -208,7 +223,10 @@
 
     <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
     <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
-    <div class="input-group"><label>Foto (Opsional)</label><input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs"></div>
+    <div class="input-group">
+    <label>Foto (Wajib Isi)</label>
+    <input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs" required>
+</div>
 </div>
         <div class="space-y-3 bg-[#2d251d] p-4 rounded-lg border border-orange-900/30 mt-4">
             <h3 class="font-bold text-green-400 uppercase border-b border-orange-900/30 pb-1">IV. Pengesahan</h3>
@@ -249,7 +267,7 @@
 </div>
 
         <div class="mt-8 flex flex-col md:flex-row gap-4">
-            <button onclick="window.print()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF</button>
+          <button onclick="validasiCetak()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition active:scale-95">🖨️ Cetak / Simpan PDF</button>
         </div>
     </div>
 
@@ -315,6 +333,15 @@
             document.getElementById('browser-warning').style.display = 'none';
         }
         
+        function validasiCetak() {
+    const foto = document.getElementById('in_foto');
+    if (!foto.files || foto.files.length === 0) {
+        alert("⚠️ Foto kegiatan belum diunggah! Silakan lampirkan foto terlebih dahulu.");
+        foto.focus();
+        return;
+    }
+    window.print();
+}
         const dataPenyuluh = {
             "ABDUL RAHMAN, SP": { nip: "199009202020121001" },
             "A. FATHUR MUH. ISHAQ B, S.ST., M.Si": { nip: "199604112020121001" },
@@ -438,6 +465,11 @@ async function generateAI() {
     // Validasi input
     if (!kegiatan) return alert("Silakan pilih JENIS KEGIATAN!");
     if (!lokasi) return alert("Silakan isi LOKASI!");
+    const foto = document.getElementById('in_foto');
+    if (!foto.files || foto.files.length === 0) {
+        return alert("⚠️ Unggah foto kegiatan terlebih dahulu agar laporan lebih akurat!");
+    }
+    
     if (!masalah.trim()) return alert("Silakan isi kolom PERMASALAHAN!");
 
     // Set tampilan Loading

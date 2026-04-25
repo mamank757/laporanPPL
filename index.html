@@ -223,8 +223,7 @@
 
     <div class="input-group"><label>Lokasi (Desa/Poktan)</label><input type="text" id="in_lokasi" oninput="updateLaporan()" placeholder="Cth: Lahan Poktan Sukamaju"></div>
     <div class="input-group"><label>Jumlah Peserta</label><input type="text" id="in_peserta" oninput="updateLaporan()" placeholder="Cth: 15 Orang"></div>
-    <div class="input-group">
-    <label>Foto (Wajib Isi)</label>
+  <div class="input-group" id="wrap_foto"> <label id="label_foto">Foto (Wajib Isi)</label>
     <input type="file" id="in_foto" accept="image/*" onchange="handleFoto(this)" class="text-xs" required>
 </div>
 </div>
@@ -333,13 +332,19 @@
             document.getElementById('browser-warning').style.display = 'none';
         }
         
-        function validasiCetak() {
+       function validasiCetak() {
+    const tipe = document.getElementById('in_tipe_laporan').value;
     const foto = document.getElementById('in_foto');
-    if (!foto.files || foto.files.length === 0) {
-        alert("⚠️ Foto kegiatan belum diunggah! Silakan lampirkan foto terlebih dahulu.");
-        foto.focus();
-        return;
+    
+    // Jika bulanan, cek apakah foto sudah diisi
+    if (tipe === "bulanan") {
+        if (!foto.files || foto.files.length === 0) {
+            alert("⚠️ Untuk Laporan Bulanan, Foto kegiatan wajib diunggah!");
+            foto.focus();
+            return;
+        }
     }
+    
     window.print();
 }
         const dataPenyuluh = {
@@ -395,13 +400,23 @@ function toggleTipeLaporan() {
     const tipe = document.getElementById("in_tipe_laporan").value;
     const wrapBulanan = document.getElementById("wrap_tgl_bulanan");
     const wrapTriwulan = document.getElementById("wrap_tgl_triwulan");
+    const wrapFoto = document.getElementById("wrap_foto");
+    const inputFoto = document.getElementById("in_foto");
+    const outFotoContainer = document.getElementById("foto_container");
 
     if (tipe === "bulanan") {
         wrapBulanan.classList.remove("hidden-element");
         wrapTriwulan.classList.add("hidden-element");
+        wrapFoto.classList.remove("hidden-element");
+        inputFoto.required = true;
+        document.getElementById("label_foto").innerText = "Foto (Wajib Isi)";
     } else {
         wrapBulanan.classList.add("hidden-element");
         wrapTriwulan.classList.remove("hidden-element");
+        wrapFoto.classList.add("hidden-element"); // Sembunyikan input
+        inputFoto.required = false; // Tidak wajib diisi
+        inputFoto.value = ""; // Reset file jika ada
+        outFotoContainer.classList.add("hidden-element"); // Sembunyikan di preview laporan
     }
     updateLaporan();
 }

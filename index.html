@@ -516,7 +516,7 @@ async function generateAI() {
 
     } catch (e) {
         console.error(e);
-        alert("Gagal memuat AI. Pastikan Web App GAS sudah di-deploy sebagai 'Anyone'.");
+        alert("Gagal Generate AI karena trafik padat/kode salah. Coba lagi nanti atau Hubungi Admin.");
     } finally {
         // Kembalikan tombol ke keadaan normal
         btn.disabled = false;

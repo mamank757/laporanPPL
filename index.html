@@ -29,6 +29,43 @@
             font-size: 11pt; line-height: 1.4; color: black; position: relative;
         }
 
+/* Update atau pastikan kode ini ada di dalam <style> */
+.foto-wrap { 
+    page-break-before: always; /* Memaksa pindah ke halaman 2 saat dicetak */
+    margin-top: 30px;
+    padding-top: 20px;
+    text-align: center;
+    width: 100%;
+    display: block; /* Memastikan kontainer mengambil ruang penuh baris */
+}
+
+.foto-title {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+#img_preview { 
+    display: block; 
+    margin: 0 auto; 
+    max-width: 100%; 
+    max-height: 15cm; /* Ukuran optimal untuk halaman F4 */
+    border: 1px solid #000; 
+    padding: 5px;
+    object-fit: contain; 
+}
+
+/* Memastikan keterangan foto berada di bawah gambar */
+#out_ket_foto {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: center;
+}
         /* Responsive Mobile Preview */
         @media screen and (max-width: 215mm) {
             .report-container { padding: 0; display: block; overflow-x: hidden; }
@@ -287,62 +324,75 @@
         </div>
     </div>
 
-    <div class="report-container">
-        <div id="report" class="report-page">
-            <div class="text-center font-bold text-base mb-6 uppercase">
-                LAPORAN PELAKSANAAN <br> <span id="out_judul_kegiatan">PENYULUHAN PERTANIAN</span>
-            </div>
-
-            <table class="w-full mb-2">
-                <tr><td style="width: 25px;" class="font-bold">1.</td><td colspan="2" class="font-bold">Penyuluh Pertanian</td></tr>
-                <tr><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama"></span> / NIP. <span id="out_nip"></span></td></tr>
-                <tr><td></td><td>b. Pangkat / Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
-                <tr><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
-                <tr><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
-                <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td>: <span id="out_dasar"></span></td></tr>
-                <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td>: <span id="out_kegiatan"></span></td></tr>
-                <tr><td class="font-bold">4.</td><td colspan="2" class="font-bold pt-2">Pelaksanaan</td></tr>
-                <tr><td></td><td>a. Waktu</td><td>: <span id="out_tgl_kegiatan"></span></td></tr>
-                <tr><td></td><td>b. Tempat/Lokasi</td><td>: <span id="out_lokasi"></span></td></tr>
-                <tr><td></td><td>c. Peserta</td><td>: <span id="out_peserta"></span></td></tr>
-                <tr><td class="font-bold">5.</td><td class="font-bold">Hasil Pekerjaan</td><td>: </td></tr>
-            </table>
-
-            <div class="ml-6 text-justify italic mb-1">Deskripsi :</div>
-            <div id="out_hasil" class="ml-6 text-justify mb-2 whitespace-pre-line text-sm"></div>
-
-            <div id="foto_container" class="foto-wrap mb-4 hidden-element text-center">
-                <img id="img_preview" src="" alt="Foto Kegiatan">
-                <p class="text-[10pt] italic">Foto Kegiatan</p>
-            </div>
-
-            <div class="font-bold ml-6 mb-1 text-sm">Permasalahan:</div>
-            <ul id="out_masalah" class="ml-12 list-disc text-sm mb-4"></ul>
-
-            <div class="font-bold ml-6 mb-1 text-sm">Upaya Penanganan:</div>
-            <ul id="out_upaya" class="ml-12 list-disc text-sm mb-10"></ul>
-
-            <div class="sig-section flex justify-between px-4 mt-10">
-                <div class="text-center w-1/2">
-                    Mengetahui:<br><span id="out_koor_jabatan">Koordinator BPP ...</span>
-                    <div class="h-20 flex items-center justify-center my-1">
-                        <img id="out_img_ttd_koor" src="" class="max-h-20 hidden">
-                    </div>
-                    <div id="out_koor_nama" class="font-bold underline uppercase">Nama Koordinator</div>
-                    NIP. <span id="out_koor_nip">19xxxxxxxxxxxxxx</span>
-                </div>
-                <div class="text-center w-1/2">
-                    <span id="out_tempat_ttd">Bola</span>, <span id="out_tgl_ttd"></span><br>
-                    Penyuluh Pertanian
-                    <div class="h-20 flex items-center justify-center my-1">
-                        <img id="out_img_ttd_ppl" src="" class="max-h-20 hidden">
-                    </div>
-                    <div id="sig_nama" class="font-bold underline uppercase"></div>
-                    NIP. <span id="sig_nip"></span>
-                </div>
-            </div>
+  <div class="report-container">
+    <div id="report" class="report-page">
+        <!-- JUDUL LAPORAN -->
+        <div class="text-center font-bold text-base mb-6 uppercase">
+            LAPORAN PELAKSANAAN <br> <span id="out_judul_kegiatan">PENYULUHAN PERTANIAN</span>
         </div>
+
+        <!-- TABEL DATA & PELAKSANAAN -->
+        <table class="w-full mb-2">
+            <tr><td style="width: 25px;" class="font-bold">1.</td><td colspan="2" class="font-bold">Penyuluh Pertanian</td></tr>
+            <tr><td></td><td style="width: 160px;">a. Nama / NIP</td><td>: <span id="out_nama"></span> / NIP. <span id="out_nip"></span></td></tr>
+            <tr><td></td><td>b. Pangkat / Golongan</td><td>: <span id="out_pangkat"></span></td></tr>
+            <tr><td></td><td>c. Jabatan</td><td>: <span id="out_jabatan"></span></td></tr>
+            <tr><td></td><td>d. Unit Kerja</td><td>: <span id="out_unit"></span></td></tr>
+            <tr><td class="font-bold">2.</td><td class="font-bold">Dasar Pelaksanaan</td><td>: <span id="out_dasar"></span></td></tr>
+            <tr><td class="font-bold">3.</td><td class="font-bold">Nama Kegiatan</td><td>: <span id="out_kegiatan"></span></td></tr>
+            <tr><td class="font-bold">4.</td><td colspan="2" class="font-bold pt-2">Pelaksanaan</td></tr>
+            <tr><td></td><td>a. Waktu</td><td>: <span id="out_tgl_kegiatan"></span></td></tr>
+            <tr><td></td><td>b. Tempat/Lokasi</td><td>: <span id="out_lokasi"></span></td></tr>
+            <tr><td></td><td>c. Peserta</td><td>: <span id="out_peserta"></span></td></tr>
+            <tr><td class="font-bold">5.</td><td class="font-bold">Hasil Pekerjaan</td><td>: </td></tr>
+        </table>
+
+        <!-- DESKRIPSI HASIL -->
+        <div class="ml-6 text-justify italic mb-1">Deskripsi :</div>
+        <div id="out_hasil" class="ml-6 text-justify mb-2 whitespace-pre-line text-sm"></div>
+
+        <!-- PERMASALAHAN -->
+        <div class="font-bold ml-6 mb-1 text-sm">Permasalahan:</div>
+        <ul id="out_masalah" class="ml-12 list-disc text-sm mb-4"></ul>
+
+        <!-- UPAYA PENANGANAN -->
+        <div class="font-bold ml-6 mb-1 text-sm">Upaya Penanganan:</div>
+        <ul id="out_upaya" class="ml-12 list-disc text-sm mb-10"></ul>
+
+        <!-- BAGIAN PENGESAHAN (Tanda Tangan Tetap di Halaman 1) -->
+        <!-- Cari bagian sig-section di dalam <div id="report"> dan ubah menjadi ini -->
+<div class="sig-section flex justify-between px-4 mt-10">
+    <div class="text-center w-1/2">
+        Mengetahui:<br><span id="out_koor_jabatan">Koordinator BPP ...</span>
+        <div class="h-20 flex items-center justify-center my-1">
+            <img id="out_img_ttd_koor" src="" class="max-h-20 hidden">
+        </div>
+        <div id="out_koor_nama" class="font-bold underline">Nama Koordinator</div>
+        NIP. <span id="out_koor_nip">19xxxxxxxxxxxxxx</span>
     </div>
+    <div class="text-center w-1/2">
+        <span id="out_tempat_ttd">Bola</span>, <span id="out_tgl_ttd"></span><br>
+        Penyuluh Pertanian
+        <div class="h-20 flex items-center justify-center my-1">
+            <img id="out_img_ttd_ppl" src="" class="max-h-20 hidden">
+        </div>
+        <!-- Perbaikan ID di sini agar sinkron dengan fungsi updateLaporan -->
+        <div id="out_nama_sig" class="font-bold underline"></div>
+        NIP. <span id="out_nip_sig"></span>
+    </div>
+</div>
+
+        <!-- FOTO KEGIATAN (Pindah ke Halaman 2 saat dicetak) -->
+        <div id="foto_container" class="foto-wrap hidden-element">
+            <div class="foto-title">LAMPIRAN FOTO KEGIATAN</div>
+            <div style="display: inline-block; border: 1px solid #000; padding: 5px;">
+                <img id="img_preview" src="" alt="Foto Kegiatan">
+            </div>
+            <p id="out_ket_foto" class="font-bold mt-4 text-center"></p>
+        </div>
+        
+    </div> <!-- Penutup id="report" -->
+</div> <!-- Penutup class="report-container" -->
 
     <script>
         function closeWarning() {
@@ -457,15 +507,35 @@ function updateLaporan() {
 
     const tglTTD = document.getElementById('in_tgl_ttd_manual').value;
 
-    fields.forEach(f => {
+   fields.forEach(f => {
         const val = document.getElementById('in_' + f)?.value || "-";
-        if (document.getElementById('out_' + f)) document.getElementById('out_' + f).innerText = val;
-        if(f === 'nama') document.getElementById('sig_nama').innerText = val;
-        if(f === 'nip') document.getElementById('sig_nip').innerText = val;
-        if(f === 'kegiatan') document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
+        
+        // Mengisi data di tabel bagian atas
+        if (document.getElementById('out_' + f)) {
+            document.getElementById('out_' + f).innerText = val;
+        }
+        
+        // Perbaikan: Mengisi Nama & NIP di bagian Tanda Tangan
+        if(f === 'nama') {
+            const sigNama = document.getElementById('out_nama_sig');
+            if(sigNama) sigNama.innerText = val;
+        }
+        if(f === 'nip') {
+            const sigNip = document.getElementById('out_nip_sig');
+            if(sigNip) sigNip.innerText = val;
+        }
+        
+        // Logika khusus untuk Nama Kegiatan dan Keterangan Foto
+        if(f === 'kegiatan') {
+            document.getElementById('out_judul_kegiatan').innerText = val.toUpperCase();
+            const ketFoto = document.getElementById('out_ket_foto');
+            if(ketFoto) {
+                // Menghasilkan teks keterangan rapi di bawah foto
+                ketFoto.innerText = "Gambar: Dokumentasi Kegiatan " + val;
+            }
+        }
     });
 
-    // Menampilkan ke Preview Laporan
     document.getElementById('out_tgl_kegiatan').innerText = textWaktu;
     document.getElementById('out_tgl_ttd').innerText = formatTanggal(tglTTD);
 
@@ -481,7 +551,6 @@ function updateLaporan() {
     renderList('in_masalah', 'out_masalah');
     renderList('in_upaya', 'out_upaya');
 }
-
 // Fungsi generateAI yang diperbarui agar tidak menimpa kolom masalah
 // VERSI UNTUK HTML DI GITHUB (MENGGUNAKAN FETCH)
 async function generateAI() {

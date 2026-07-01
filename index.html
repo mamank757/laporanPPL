@@ -600,8 +600,11 @@ async function generateAI() {
     // Validasi input
     if (!kegiatan) return alert("Silakan pilih JENIS KEGIATAN!");
     if (!lokasi) return alert("Silakan isi LOKASI!");
+    const tipe = document.getElementById('in_tipe_laporan').value;
     const foto = document.getElementById('in_foto');
-    if (!foto.files || foto.files.length === 0) {
+    
+    // AI hanya mewajibkan foto jika tipenya "bulanan"
+    if (tipe === "bulanan" && (!foto.files || foto.files.length === 0)) {
         return alert("⚠️ Unggah foto kegiatan terlebih dahulu agar laporan lebih akurat!");
     }
     
